@@ -1,3 +1,9 @@
+//Model***********************************************
+//********************************************************
+//********************************************************
+//********************************************************
+//********************************************************
+//********************************************************
 var torpedoesLeft
 var hits
 var shipArray=[]
@@ -45,8 +51,38 @@ function place5h(){
   } // end for
 
 } // end place5h function
-place5h()
-console.log("5 ship now on board")
+
+
+function place5v(){
+  checkArray = []
+  var coordinate1 = Math.floor(Math.random() * 6)
+  var coordinate2 = Math.floor(Math.random() * 10)
+  var coordinate = coordinate1.toString() + coordinate2.toString();
+  coordinate = +coordinate;
+  console.log("the 5v coordinate is now: " + coordinate)
+  check(coordinate)
+  check(coordinate + 10)
+  check(coordinate + 20)
+  check(coordinate + 30)
+  check(coordinate + 40)
+  if (checkArray.includes("failed")){
+      console.log("call place5v again")
+      place5v()
+  }else{
+      console.log("PLACE 5v SHIP")
+      //place 5v ship on board array
+      board[coordinate] = ship5v
+      console.log("placing ship at " + (coordinate))
+      board[coordinate+10] = ship5v
+      console.log("placing ship at " + (coordinate+10))
+      board[coordinate+20] = ship5v
+      console.log("placing ship at " + (coordinate+20))
+      board[coordinate+30] = ship5v
+      console.log("placing ship at " + (coordinate+30))
+      board[coordinate+40] = ship5v
+      console.log("placing ship at " + (coordinate+40))
+  } // end else
+} // end place5v function
 
 function place4h(){
   checkArray = []
@@ -72,7 +108,6 @@ function place4h(){
   } // end else
 } // end place4h function
 
-place4h()
 
 function place4v(){
   checkArray = []
@@ -102,8 +137,6 @@ function place4v(){
   } // end else
 } // end place4v function
 
-place4v()
-
 
 function place3h(){
   checkArray = []
@@ -127,8 +160,6 @@ function place3h(){
       } // end for
   } // end else
 } // end place3h function
-
-place3h()
 
 function place3v(){
   checkArray = []
@@ -155,7 +186,6 @@ function place3v(){
   } // end else
 } // end place3v function
 
-place3v()
 
 function place2h(){
   checkArray = []
@@ -179,7 +209,6 @@ function place2h(){
   } // end else
 } // end place2h function
 
-place2h()
 
 function place2v(){
   checkArray = []
@@ -204,7 +233,6 @@ function place2v(){
   } // end else
 } // end place2v function
 
-place2v()
 
 function place1(){
   checkArray = []
@@ -213,7 +241,7 @@ function place1(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
   console.log("the 1 coordinate is now: " + coordinate)
-  check(coordinate)
+  // check(coordinate)
   if (checkArray.includes("failed")){
       console.log("call place1 again")
       place1()
@@ -225,4 +253,75 @@ function place1(){
   } // end else
 } // end place1 function
 
+
+//build board for view in html
+//eq(i) gets element of position i
+function makeTable() {
+  for (i = 0; i < 10; i++){
+    $("#board").append("<tr>")
+    $("tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
+      for (j = 0; j<10; j++){
+        $("tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
+      }
+  }
+}
+
+//show ships function
+function showAllShips() {
+  if($("td").hasClass("ship5")) {
+    console.log("added ship5show")
+    $(".ship5").addClass("ship5show")
+  }
+  if ($("td").hasClass("ship4")) {
+    console.log("added ship4show")
+    $(".ship4").addClass("ship4show")
+  }
+  if($("td").hasClass("ship3")) {
+    console.log("added ship3show")
+    $(".ship3").addClass("ship3show")
+  }
+  if($("td").hasClass("ship2")) {
+    console.log("added ship2show")
+    $(".ship2").addClass("ship2show")
+  }
+  if($("td").hasClass("ship1")) {
+    console.log("added ship1show")
+    $(".ship1").addClass("ship1show")
+  }
+  if($("td").hasClass("hit")){
+    $(".hit").addClass("hit2")
+  }
+}
+
+
+// place5h()
+// console.log("5h ship placed")
+place5v()
+console.log("5v ship placed")
+place4h()
+console.log("4h ship placed")
+place4v()
+console.log("4v ship placed")
+place3h()
+console.log("3h ship placed")
+place3v()
+console.log("3v ship placed")
+place2h()
+console.log("2h ship placed")
+place2v()
+console.log("2v ship placed")
 place1()
+console.log("1 ship placed")
+
+makeTable()
+console.log("made the table for view")
+
+showAllShips()
+console.log("call showAllShips")
+
+//Controller***********************************************
+//********************************************************
+//********************************************************
+//********************************************************
+//********************************************************
+//********************************************************
