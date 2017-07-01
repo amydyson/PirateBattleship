@@ -1,0 +1,127 @@
+td{
+  border: 5px solid black;
+  width: 50px;
+  height: 50px;
+}
+
+#board {
+  border-collapse: collapse;
+  margin: 70px auto 30px auto;
+  background-color: #ccd9ff
+
+}
+
+h1 {
+  text-align: center;
+}
+
+.torpedoed {
+  background-color: #0040ff
+}
+
+.hit{
+  background-color: #cc0000
+}
+
+#blue {
+  width: 30px;
+  height: 30px;
+  background-color: #0040ff;
+  color: white;
+}
+
+#red {
+  width: 30px;
+  height: 30px;
+  background-color: #cc0000;
+  color: white;
+}
+
+#green {
+  width: 30px;
+  height: 30px;
+  background-color: #5cd65c;
+}
+
+#purple {
+  width: 30px;
+  height: 30px;
+  background-color: #884dff;
+}
+
+#yellow {
+  width: 30px;
+  height: 30px;
+  background-color: #ffff80;
+}
+
+#orange {
+  width: 30px;
+  height: 30px;
+  background-color: #ff751a;
+}
+
+#pink {
+  width: 30px;
+  height: 30px;
+  background-color: #ff4dd2;
+}
+
+
+
+#torpedoTracker, #hitTracker{
+  font-size: 2em;
+}
+
+#legend {
+  font-size: 1em;
+}
+
+#winLose {
+  text-align: center;
+  color: #cc0000;
+}
+
+.showShip {
+  background-color: gray;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+
+.ship5show {
+  background-color: #5cd65c;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship4show {
+  background-color: #884dff;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship3show {
+  background-color: #ffff80;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship2show {
+  background-color: #ff751a;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship1show {
+  background-color: #ff4dd2;
+  background-image: url("ship.png");
+  background-size: contain;
+}
+.btn {
+  margin: auto;
+}
+
+.hit2{
+  background-color: #cc0000
+}
