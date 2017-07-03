@@ -8,6 +8,7 @@ var torpedoesLeft
 var hits
 var shipArray=[]
 var checkArray = []
+var aiArray = []
 var timeout
 var notPlaced = 0
 var shipsLeft = 8
@@ -452,8 +453,14 @@ $(document).ready(function(){
     torpedoesLeft=25;
     notPlaced = 0;
     shipsLeft = 8;
+    aiArray = []
     board.fill(0)
     console.log("board now zeroes");
+    for (i=0; i<100; i++){
+    aiArray[i] = i;
+    }
+    console.log("aiArray now filled");
+
     h2 = 0
     v2 = 0
     h3 = 0
@@ -513,12 +520,14 @@ $(document).ready(function(){
     //each time user clicks specific square:
     $("#humanClick").click(function(){
 
+console.log("!!!!hits equal to " + hits)
 
-
-        console.log("Opponent chooses a square so now get a random number")
+    // console.log("Opponent chooses a square so now get a random number")
 
     //AFTER human pirate clicks on a square, AI chooses a square randomly the first time:
+    if (hits === 0){
 
+    console.log ("hits are ZERO so get a random number")
     var coordinate1 = Math.floor(Math.random() * 10)
     var coordinate2 = Math.floor(Math.random() * 10)
     var coordinate = coordinate1.toString() + coordinate2.toString();
@@ -531,6 +540,10 @@ $(document).ready(function(){
     var dig1 = currentTd[1] //split td, get 2nd digit
 
     console.log("Make currentTd the same as coordinate. current Td: " + currentTd)
+
+}else if (hits> 0){
+console.log("hits are greater than zero")
+}
 ///Pause AI pirate
 
       console.log("Pausing now")
