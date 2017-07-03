@@ -12,6 +12,8 @@ var timeout
 var notPlaced = 0
 var shipsLeft = 8
 var choose5
+var pirateTalk
+var audio
 
 var h2 = 0
 var v2 = 0
@@ -157,7 +159,7 @@ function place4v(){
       board[coordinate] = ship4v
     //   $("#"+ (coordinate)).addClass("ship4")
       $("#"+ (coordinate1)+ (coordinate2)).addClass("ship4")
-      
+
       console.log("placing ship at " + (coordinate))
       board[coordinate+10] = ship4v
     //   $("#"+ (coordinate+10)).addClass("ship4")
@@ -517,10 +519,15 @@ $(document).ready(function(){
         $(this).addClass("hit");
         hits ++
 
+
+
+
 //////////////////////////////////////////////////////////////////////////////
 
 if (board[currentTd] === ship1){
    shipsLeft--
+   audio = $("#abandonShip")[0];
+   audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    console.log("1 block ship hit, shipsLeft is: " + shipsLeft)
 }
@@ -529,8 +536,13 @@ if (board[currentTd] === ship2h){  // if the 2h ship is hit
    h2++                            //increment 2h counter
    if (h2 === 2){                 //if both block of 2h ship is hit
    shipsLeft--                    //decrement shipsLeft
+   audio = $("#abandonShip")[0];
+   audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    console.log("2 block ship hit, shipsLeft is: " + shipsLeft)
+   } else {
+       audio = $("#fire")[0];
+       audio.play();
    }
 }
 
@@ -538,8 +550,13 @@ if (board[currentTd] === ship2v){  // if the 2v ship is hit
    v2++                            //increment 2v counter
    if (v2 === 2){                 //if both block of 2v ship is hit
    shipsLeft--                    //decrement shipsLeft
+   audio = $("#abandonShip")[0];
+   audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    console.log("2 block ship hit, shipsLeft is: " + shipsLeft)
+   }else {
+       audio = $("#fire")[0];
+       audio.play();
    }
 }
 
@@ -547,8 +564,13 @@ if (board[currentTd] === ship3h){  // if the 3h ship is hit
    h3++                            //increment 3h counter
    if (h3 === 3){                 //if both block of 3h ship is hit
    shipsLeft--                    //decrement shipsLeft
+   audio = $("#abandonShip")[0];
+   audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    console.log("3 block ship hit, shipsLeft is: " + shipsLeft)
+   }else {
+       audio = $("#fire")[0];
+       audio.play();
    }
 }
 
@@ -556,8 +578,13 @@ if (board[currentTd] === ship3v){  // if the 3v ship is hit
    v3++                            //increment 3v counter
    if (v3 === 3){                 //if both block of 3v ship is hit
    shipsLeft--                    //decrement shipsLeft
+   audio = $("#abandonShip")[0];
+   audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    console.log("3 block ship hit, shipsLeft is: " + shipsLeft)
+   }else {
+       audio = $("#fire")[0];
+       audio.play();
    }
 }
 
@@ -565,8 +592,13 @@ if (board[currentTd] === ship4h){  // if the 4h ship is hit
    h4++                            //increment 4h counter
    if (h4 === 4){                 //if both block of 4h ship is hit
    shipsLeft--                    //decrement shipsLeft
+   audio = $("#abandonShip")[0];
+   audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    console.log("4 block ship hit, shipsLeft is: " + shipsLeft)
+   }else {
+       audio = $("#fire")[0];
+       audio.play();
    }
 }
 
@@ -574,8 +606,13 @@ if (board[currentTd] === ship4v){  // if the 4v ship is hit
    v4++                            //increment 4v counter
    if (v4 === 4){                 //if both block of 4v ship is hit
    shipsLeft--                    //decrement shipsLeft
+   audio = $("#abandonShip")[0];
+   audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    console.log("4 block ship hit, shipsLeft is: " + shipsLeft)
+   }else {
+       audio = $("#fire")[0];
+       audio.play();
    }
 }
 
@@ -583,8 +620,13 @@ if (board[currentTd] === ship5){  // if the 5h or 5v ship is hit
    hv5++                            //increment 5hv counter
    if (hv5 === 5){                 //if both block of 5h ship is hit
    shipsLeft--                    //decrement shipsLeft
+   audio = $("#abandonShip")[0];
+   audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    console.log("5 block ship hit, shipsLeft is: " + shipsLeft)
+   }else {
+       audio = $("#fire")[0];
+       audio.play();
    }
 }
 
