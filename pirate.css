@@ -20,7 +20,10 @@ h1 {
 }
 
 .hit{
-  background-color: #cc0000
+  /*background-color: #cc0000*/
+  background-image: url("shipCannon.png");
+  /*z-index: 2*/
+  background-size: contain;
 }
 
 #blue {
@@ -123,5 +126,8 @@ h1 {
 }
 
 .hit2{
-  background-color: #cc0000
+  /*background-color: #cc0000*/
+   background-image: url("shipCannon.png");
+  /*z-index: 2*/
+  background-size: contain;
 }

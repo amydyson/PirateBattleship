@@ -124,7 +124,9 @@ function place4h(){
       for (i=0; i <4; i++){
       board[coordinate + i] = ship4h
     // $("#"+ (coordinate+i)).addClass("ship4")
-    $("#"+ (coordinate1)+ (coordinate2+i)).addClass("ship4")
+    // $("#"+ (coordinate1)+ (coordinate2+i)).addClass("ship4")
+    $("#"+ (coordinate+i)).addClass("ship4")
+
       console.log("placing ship at " + (coordinate + i))
       } // end for
   } // end else
@@ -155,6 +157,7 @@ function place4v(){
       board[coordinate] = ship4v
     //   $("#"+ (coordinate)).addClass("ship4")
       $("#"+ (coordinate1)+ (coordinate2)).addClass("ship4")
+      
       console.log("placing ship at " + (coordinate))
       board[coordinate+10] = ship4v
     //   $("#"+ (coordinate+10)).addClass("ship4")
@@ -357,10 +360,10 @@ function showAllShips() {
     console.log("added ship1show")
     $(".ship1").addClass("ship1show")
   }
-  // if($("td").hasClass("hit")){
-  //   $(".hit").addClass("hit2")
-  // }
-}
+  if($("td").hasClass("hit")){
+    $(".hit").addClass("hit2")
+  }
+} // end showAllShips
 
  choose5 = Math.floor(Math.random() * 2)
 
@@ -401,8 +404,6 @@ console.log("1 ship call RESULT (either placed or not placed)")
 makeTable()
 console.log("made the table for view")
 
-
-showAllShips()
 
 console.log("NotPlaced is: " + notPlaced)
 //Controller***********************************************
@@ -466,6 +467,7 @@ $(document).ready(function(){
     $(".btn").hide();
 
     choose5 = Math.floor(Math.random() * 2)
+
     ///***randomly decide to place EITHER a 5 block horizontal ship OR a 5 block vertical ship
     if(choose5 ==0){
        place5h()
@@ -497,6 +499,7 @@ $(document).ready(function(){
     place1()
     console.log("1 ship call finished (may not be placed if conflict)")
     console.log("notPlaced is now " + notPlaced)
+
 
 
 
