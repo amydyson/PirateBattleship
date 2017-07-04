@@ -4,11 +4,24 @@ td{
   height: 40px;
 }
 
-#board {
+#humansTracker, #aiTracker {
+margin-top: 0px;
+text-align: center;
+font-weight: bold;
+color: #960909;
+
+}
+
+#humanBoard{
   border-collapse: collapse;
   margin: 10px auto 20px auto;
   background-color: #ccd9ff
+}
 
+#aiBoard{
+  border-collapse: collapse;
+  margin: 10px auto 20px auto;
+  background-color: #ccd9ff
 }
 
 
@@ -75,7 +88,7 @@ h1 {
 
 #torpedoTracker, #shipTracker, #hitTracker {
   font-weight: bold;
-  font-size: 1.75em;
+  font-size: 1.5em;
   text-align: center;
   color: gray;
 }

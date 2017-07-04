@@ -343,15 +343,27 @@ function place1(){
 
 //build board for view in html
 //eq(i) gets element of position i
+
 function makeTable() {
   for (i = 0; i < 10; i++){
-    $("#board").append("<tr>")
-    $("tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
+    $("#humanBoard").append("<tr>")
+    $("#humanBoard tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
       for (j = 0; j<10; j++){
-        $("tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
+        $("#humanBoard tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
+      }
+  }
+
+  for (i = 0; i < 10; i++){
+    $("#aiBoard").append("<tr>")
+    $("#aiBoard tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
+      for (j = 0; j<10; j++){
+        $("#aiBoard tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
       }
   }
 }
+
+
+
 
 //show ships function
 function showAllShips() {
@@ -448,6 +460,7 @@ $(document).ready(function(){
   makeTable() //create board
   $("td").off("click"); //clicking off until start button pressed
 
+
   //Once start button clicked all this happens:
   $(".btn").click(function(){
 
@@ -499,6 +512,9 @@ $(document).ready(function(){
 
     //hide start button until game over
     $(".btn").hide();
+    $("#instructions").text("");
+
+
 
     choose5 = Math.floor(Math.random() * 2)
 
