@@ -561,6 +561,7 @@ $(document).ready(function(){
 
         //turns square red
         $(this).addClass("hit");
+        $(this).off("click");
         hits ++
 
 
@@ -707,7 +708,7 @@ if (board[currentTd] === ship5){  // if the 5h or 5v ship is hit
 /////////////////////////////////////////////////////////////////////////////
 
         $("#hitTracker").text("Hits: " + hits)
-        if (shipsLeft === 0 && torpedoesLeft > 0) {
+        if (shipsLeft === 0) {
           $("#winLose").text("You Won! You sank all pirate ships with 50 cannonballs");
           $("td").off("click");
           console.log("calling showAllShips function because won")
@@ -725,8 +726,11 @@ if (board[currentTd] === ship5){  // if the 5h or 5v ship is hit
     $("#torpedoTracker").text("Cannonballs left: " + torpedoesLeft);
     //check if used 25 torpedos.  Game over, show start button, turn board click off
     if(torpedoesLeft === 0){
-
-     if (shipsLeft ==1){
+     if (shipsLeft == 0){
+        $("#winLose").text("You Won! You sank all pirate ships with 50 cannonballs");
+        $("td").off("click");
+     }
+     else if (shipsLeft ==1){
      $("#winLose").text("Almost! Only one pirate ship left marauding the high seas. Set sail and try again!");
      }else {
      $("#winLose").text("There are still " + shipsLeft + " pirate ships left marauding the high seas. Set sail and try again!");
