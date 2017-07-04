@@ -1,15 +1,16 @@
 td{
   border: 5px solid black;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 }
 
 #board {
   border-collapse: collapse;
-  margin: 70px auto 30px auto;
+  margin: 10px auto 20px auto;
   background-color: #ccd9ff
 
 }
+
 
 h1 {
   text-align: center;
@@ -21,7 +22,7 @@ h1 {
 
 .hit{
   /*background-color: #cc0000*/
-  background-image: url("shipCannon.png");
+  background-image: url("shipXed.png");
   /*z-index: 2*/
   background-size: contain;
 }
@@ -72,9 +73,18 @@ h1 {
 
 
 
-#torpedoTracker, #hitTracker, #shipTracker{
-  font-size: 2em;
+#torpedoTracker, #shipTracker, #hitTracker {
+  font-weight: bold;
+  font-size: 1.75em;
+  text-align: center;
+  color: gray;
 }
+
+#instructions {
+    font-size: 2em;
+    text-align: center;
+}
+
 
 #legend {
   font-size: 1em;
@@ -82,9 +92,16 @@ h1 {
 
 #winLose {
   text-align: center;
-  color: #cc0000;
+  color: #8c0404;
 }
 
+
+.shipSunk {
+  background-color: #2a2f38;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
 .showShip {
   background-color: gray;
   background-image: url("ship.png");
@@ -98,19 +115,38 @@ h1 {
   /*z-index: 2*/
   background-size: contain;
 }
-.ship4show {
+.ship4hshow {
   background-color: #884dff;
   background-image: url("ship.png");
   /*z-index: 2*/
   background-size: contain;
 }
-.ship3show {
+
+.ship4vshow {
+  background-color: #884dff;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship3hshow {
   background-color: #ffff80;
   background-image: url("ship.png");
   /*z-index: 2*/
   background-size: contain;
 }
-.ship2show {
+.ship3vshow {
+  background-color: #ffff80;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship2hshow {
+  background-color: #ff751a;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship2vshow {
   background-color: #ff751a;
   background-image: url("ship.png");
   /*z-index: 2*/
@@ -127,7 +163,7 @@ h1 {
 
 .hit2{
   /*background-color: #cc0000*/
-   background-image: url("shipCannon.png");
+   background-image: url("shipXed.png");
   /*z-index: 2*/
   background-size: contain;
 }
