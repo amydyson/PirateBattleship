@@ -343,22 +343,18 @@ function place1(){
 
 //build board for view in html
 //eq(i) gets element of position i
-
-
 function makeTable() {
   for (i = 0; i < 10; i++){
-      console.log("in board for loop for make table")
     $("#board").append("<tr>")
-    $("#board tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
+    $("tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
       for (j = 0; j<10; j++){
-        $("#humanBoard tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
+        $("#board tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
       }
   }
 
   for (i = 0; i < 10; i++){
-            console.log("in aiboard for loop for make table")
     $("#aiBoard").append("<tr>")
-    $("#aiBoard tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
+    $("tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
       for (j = 0; j<10; j++){
         $("#aiBoard tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
       }
@@ -459,7 +455,7 @@ $(document).ready(function(){
   //on load you see table
   makeTable() //create board
   $("td").off("click"); //clicking off until start button pressed
-console.log("Just calling make table")
+
   //Once start button clicked all this happens:
   $(".btn").click(function(){
 

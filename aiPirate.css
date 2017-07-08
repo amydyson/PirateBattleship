@@ -10,7 +10,7 @@ td{
     font-weight: 400;
 }
 
-#board, #aiBoard{
+#board, #aiBoard {
   border-collapse: collapse;
   margin: 10px auto 20px auto;
   background-color: #ccd9ff
