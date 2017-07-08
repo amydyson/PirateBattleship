@@ -1,0 +1,170 @@
+td{
+  border: 5px solid black;
+  width: 40px;
+  height: 40px;
+}
+
+#board {
+  border-collapse: collapse;
+  margin: 10px auto 20px auto;
+  background-color: #ccd9ff
+
+}
+
+
+h1 {
+  text-align: center;
+}
+
+.torpedoed {
+  background-color: #0040ff
+}
+
+.hit{
+  /*background-color: #cc0000*/
+  background-image: url("shipXed.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+
+#blue {
+  width: 30px;
+  height: 30px;
+  background-color: #0040ff;
+  color: white;
+}
+
+#red {
+  width: 30px;
+  height: 30px;
+  background-color: #cc0000;
+  color: white;
+}
+
+#green {
+  width: 30px;
+  height: 30px;
+  background-color: #5cd65c;
+}
+
+#purple {
+  width: 30px;
+  height: 30px;
+  background-color: #884dff;
+}
+
+#yellow {
+  width: 30px;
+  height: 30px;
+  background-color: #ffff80;
+}
+
+#orange {
+  width: 30px;
+  height: 30px;
+  background-color: #ff751a;
+}
+
+#pink {
+  width: 30px;
+  height: 30px;
+  background-color: #ff4dd2;
+}
+
+
+
+#torpedoTracker, #shipTracker, #hitTracker {
+  font-weight: bold;
+  font-size: 1.5em;
+  text-align: center;
+  color: gray;
+}
+
+#instructions {
+    font-size: 1.5em;
+    text-align: center;
+    color: #960909;
+}
+
+
+#legend {
+  font-size: 1em;
+}
+
+#winLose {
+  text-align: center;
+  color: #8c0404;
+}
+
+
+.shipSunk {
+  background-color: #2a2f38;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.showShip {
+  background-color: gray;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+
+.ship5show {
+  background-color: #5cd65c;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship4hshow {
+  background-color: #884dff;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+
+.ship4vshow {
+  background-color: #884dff;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship3hshow {
+  background-color: #ffff80;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship3vshow {
+  background-color: #ffff80;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship2hshow {
+  background-color: #ff751a;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship2vshow {
+  background-color: #ff751a;
+  background-image: url("ship.png");
+  /*z-index: 2*/
+  background-size: contain;
+}
+.ship1show {
+  background-color: #ff4dd2;
+  background-image: url("ship.png");
+  background-size: contain;
+}
+.btn {
+  margin: auto;
+}
+
+.hit2{
+  /*background-color: #cc0000*/
+   background-image: url("shipXed.png");
+  /*z-index: 2*/
+  background-size: contain;
+}

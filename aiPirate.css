@@ -1,28 +1,20 @@
-/* New styling for ai Pirate*/
 td{
   border: 5px solid black;
   width: 40px;
   height: 40px;
 }
 
-#humansTracker, #aiTracker {
-margin-top: 0px;
-text-align: center;
-font-weight: bold;
-color: #960909;
+#aiTracker, #humansTracker {
 
+    text-align: center;
+    font-weight: 400;
 }
 
-#humanBoard{
+#board, #aiBoard{
   border-collapse: collapse;
   margin: 10px auto 20px auto;
   background-color: #ccd9ff
-}
 
-#aiBoard{
-  border-collapse: collapse;
-  margin: 10px auto 20px auto;
-  background-color: #ccd9ff
 }
 
 
@@ -95,8 +87,9 @@ h1 {
 }
 
 #instructions {
-    font-size: 2em;
+    font-size: 1.5em;
     text-align: center;
+    color: #960909;
 }
 
 
