@@ -343,101 +343,97 @@ function place1(){
 
 //build board for view in html
 //eq(i) gets element of position i
-
 function makeTable() {
   for (i = 0; i < 10; i++){
-    $("#humanBoard").append("<tr>")
-    $("#humanBoard tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
+    $("#board").append("<tr>")
+    $("tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
       for (j = 0; j<10; j++){
-        $("#humanBoard tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
+        $("#board tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
       }
   }
 
   for (i = 0; i < 10; i++){
     $("#aiBoard").append("<tr>")
-    $("#aiBoard tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
+    $("tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
       for (j = 0; j<10; j++){
         $("#aiBoard tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
       }
   }
 }
 
-
-
-
 //show ships function
 function showAllShips() {
-  if($("td").hasClass("ship5")) {
+  if($("#board td").hasClass("ship5")) {
     console.log("added ship5show")
     $(".ship5").addClass("ship5show")
   }
-  if ($("td").hasClass("ship4h")) {
+  if ($("#board td").hasClass("ship4h")) {
     console.log("added ship4hshow")
     $(".ship4h").addClass("ship4hshow")
   }
-  if ($("td").hasClass("ship4v")) {
+  if ($("#board td").hasClass("ship4v")) {
     console.log("added ship4vshow")
     $(".ship4v").addClass("ship4vshow")
   }
-  if($("td").hasClass("ship3h")) {
+  if($("#board td").hasClass("ship3h")) {
     console.log("added ship3hshow")
     $(".ship3h").addClass("ship3hshow")
   }
-  if($("td").hasClass("ship3v")) {
+  if($("#board td").hasClass("ship3v")) {
     console.log("added ship3vshow")
     $(".ship3v").addClass("ship3vshow")
   }
-  if($("td").hasClass("ship2h")) {
+  if($("#board td").hasClass("ship2h")) {
     console.log("added ship2hshow")
     $(".ship2h").addClass("ship2hshow")
   }
-  if($("td").hasClass("ship2v")) {
+  if($("#board td").hasClass("ship2v")) {
     console.log("added ship2vshow")
     $(".ship2v").addClass("ship2vshow")
   }
-  if($("td").hasClass("ship1")) {
+  if($("#board td").hasClass("ship1")) {
     console.log("added ship1show")
     $(".ship1").addClass("ship1show")
   }
-  if($("td").hasClass("hit")){
+  if($("#board td").hasClass("hit")){
     $(".hit").addClass("hit2")
   }
 } // end showAllShips
 
- choose5 = Math.floor(Math.random() * 2)
+ // choose5 = Math.floor(Math.random() * 2)
 
  ///***randomly decide to place EITHER a 5 block horizontal ship OR a 5 block vertical ship
-
- if(choose5 ==0){
-    place5h()
-    console.log("5h ship placed")
-  }else{
-    place5v()
-    console.log("5v ship placed")
-  }
-
-
-timeout = 0
-place4h()
-console.log("4h ship call RESULT (either placed or not placed)")
-timeout = 0
-place4v()
-console.log("4v ship call RESULT (either placed or not placed)")
-timeout = 0
-place3h()
-console.log("3h ship call RESULT (either placed or not placed)")
-timeout = 0
-place3v()
-console.log("3v ship call RESULT (either placed or not placed)")
-timeout = 0
-place2h()
-console.log("2h ship call RESULT (either placed or not placed)")
-timeout = 0
-place2v()
-console.log("2v ship call RESULT (either placed or not placed)")
-timeout = 0
-place1()
-console.log("1 ship call RESULT (either placed or not placed)")
+//
+//  if(choose5 ==0){
+//     place5h()
+//     console.log("5h ship placed")
+//   }else{
+//     place5v()
+//     console.log("5v ship placed")
+//   }
+//
+//
+// timeout = 0
+// place4h()
+// console.log("4h ship call RESULT (either placed or not placed)")
+// timeout = 0
+// place4v()
+// console.log("4v ship call RESULT (either placed or not placed)")
+// timeout = 0
+// place3h()
+// console.log("3h ship call RESULT (either placed or not placed)")
+// timeout = 0
+// place3v()
+// console.log("3v ship call RESULT (either placed or not placed)")
+// timeout = 0
+// place2h()
+// console.log("2h ship call RESULT (either placed or not placed)")
+// timeout = 0
+// place2v()
+// console.log("2v ship call RESULT (either placed or not placed)")
+// timeout = 0
+// place1()
+// console.log("1 ship call RESULT (either placed or not placed)")
 
 
 makeTable()
@@ -460,30 +456,29 @@ $(document).ready(function(){
   makeTable() //create board
   $("td").off("click"); //clicking off until start button pressed
 
-
   //Once start button clicked all this happens:
-  $(".btn").click(function(){
+  $("#start").click(function(){
 
     //make board all light blue: (reset)
-    $("td").removeClass("torpedoed");
-    $("td").removeClass("hit");
-    $("td").removeClass("hit2");
-    $("td").removeClass("ship1show");
-    $("td").removeClass("ship2hshow");
-    $("td").removeClass("ship2vshow");
-    $("td").removeClass("ship3hshow");
-    $("td").removeClass("ship3vshow");
-    $("td").removeClass("ship4hshow");
-    $("td").removeClass("ship4vshow");
-    $("td").removeClass("ship5show");
-    $("td").removeClass("ship1");
-    $("td").removeClass("ship2h");
-    $("td").removeClass("ship2v");
-    $("td").removeClass("ship3h");
-    $("td").removeClass("ship3v");
-    $("td").removeClass("ship4h");
-    $("td").removeClass("ship4v");
-    $("td").removeClass("ship5");
+    $("#board td").removeClass("torpedoed");
+    $("#board td").removeClass("hit");
+    $("#board td").removeClass("hit2");
+    $("#board td").removeClass("ship1show");
+    $("#board td").removeClass("ship2hshow");
+    $("#board td").removeClass("ship2vshow");
+    $("#board td").removeClass("ship3hshow");
+    $("#board td").removeClass("ship3vshow");
+    $("#board td").removeClass("ship4hshow");
+    $("#board td").removeClass("ship4vshow");
+    $("#board td").removeClass("ship5show");
+    $("#board td").removeClass("ship1");
+    $("#board td").removeClass("ship2h");
+    $("#board td").removeClass("ship2v");
+    $("#board td").removeClass("ship3h");
+    $("#board td").removeClass("ship3v");
+    $("#board td").removeClass("ship4h");
+    $("#board td").removeClass("ship4v");
+    $("#board td").removeClass("ship5");
 
     //setting variables to 0/empty
     shipArray=[];
@@ -502,19 +497,23 @@ $(document).ready(function(){
     v4 = 0
     hv5 = 0
 
+console.log("torpedoesLeft is " + torpedoesLeft)
+console.log("shipsLeft is " + shipsLeft)
+console.log("hits is " + hits)
 
-    //clear text on screen
+
+
+
+    // clear text on screen
     $("#hitTracker").text("Hits: " + hits);
     $("#torpedoTracker").text("Cannonballs left: " + torpedoesLeft);
-    $("#shipsLeft").text("Ships left: " + shipsLeft);
+    $("#shipTracker").text("Ships left: " + shipsLeft);
 
     $("#winLose").text("");
 
     //hide start button until game over
-    $(".btn").hide();
-    $("#instructions").text("");
-
-
+    $("#start").hide();
+    $("#instructions").hide();
 
     choose5 = Math.floor(Math.random() * 2)
 
@@ -556,7 +555,7 @@ $(document).ready(function(){
     // console.log("shipArray is: " + shipArray)
 
     //each time user clicks specific square:
-    $("td").click(function(){
+    $("#board td").click(function(){
       currentTd = $(this).attr("id") //grab id of td clicked
       dig0 = currentTd[0] //split td, get first digit
       dig1 = currentTd[1] //split td, get 2nd digit
@@ -756,7 +755,7 @@ if (board[currentTd] === ship5){  // if the 5h or 5v ship is hit
       $("td").off("click");
       console.log("callind showAllShips if you lose")
       showAllShips() //after game over, show ships they did not hit
-      $(".btn").show();
+      $("#start").show();
     }
   })
 console.log("game is starting")

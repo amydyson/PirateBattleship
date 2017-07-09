@@ -343,22 +343,18 @@ function place1(){
 
 //build board for view in html
 //eq(i) gets element of position i
-
-
 function makeTable() {
   for (i = 0; i < 10; i++){
-      console.log("in board for loop for make table")
     $("#board").append("<tr>")
-    $("#board tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
+    $("tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
       for (j = 0; j<10; j++){
-        $("#humanBoard tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
+        $("#board tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
       }
   }
 
   for (i = 0; i < 10; i++){
-            console.log("in aiboard for loop for make table")
     $("#aiBoard").append("<tr>")
-    $("#aiBoard tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
+    $("tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
       for (j = 0; j<10; j++){
         $("#aiBoard tr").eq(i).append("<td id=" + i + j + ">") //for each tr we add 10 tds and give tds an id="[i][j]"
       }
@@ -404,40 +400,7 @@ function showAllShips() {
   }
 } // end showAllShips
 
- // choose5 = Math.floor(Math.random() * 2)
 
- ///***randomly decide to place EITHER a 5 block horizontal ship OR a 5 block vertical ship
-//
-//  if(choose5 ==0){
-//     place5h()
-//     console.log("5h ship placed")
-//   }else{
-//     place5v()
-//     console.log("5v ship placed")
-//   }
-//
-//
-// timeout = 0
-// place4h()
-// console.log("4h ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place4v()
-// console.log("4v ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place3h()
-// console.log("3h ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place3v()
-// console.log("3v ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place2h()
-// console.log("2h ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place2v()
-// console.log("2v ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place1()
-// console.log("1 ship call RESULT (either placed or not placed)")
 
 
 makeTable()
@@ -445,21 +408,19 @@ console.log("made the table for view")
 
 
 console.log("NotPlaced is: " + notPlaced)
-//Controller***********************************************
-//********************************************************
-//********************************************************
-//********************************************************
-//********************************************************
-//********************************************************
 
-//Controller***********************************************
-//***********************************************
+//Original Controller***************************************
+//********************************************************
+//********************************************************
+//********************************************************
+//********************************************************
+//********************************************************
 
 $(document).ready(function(){
   //on load you see table
   makeTable() //create board
   $("td").off("click"); //clicking off until start button pressed
-console.log("Just calling make table")
+
   //Once start button clicked all this happens:
   $(".btn").click(function(){
 
