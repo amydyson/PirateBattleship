@@ -79,7 +79,7 @@ h1 {
 
 
 
-#torpedoTracker, #shipTracker, #hitTracker {
+#torpedoTracker, #shipTracker, #hitTracker, #aiTorpedoTracker, #aiShipTracker, #aiHitTracker  {
   font-weight: bold;
   font-size: 1.5em;
   text-align: center;
