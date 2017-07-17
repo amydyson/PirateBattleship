@@ -400,40 +400,7 @@ function showAllShips() {
   }
 } // end showAllShips
 
- // choose5 = Math.floor(Math.random() * 2)
 
- ///***randomly decide to place EITHER a 5 block horizontal ship OR a 5 block vertical ship
-//
-//  if(choose5 ==0){
-//     place5h()
-//     console.log("5h ship placed")
-//   }else{
-//     place5v()
-//     console.log("5v ship placed")
-//   }
-//
-//
-// timeout = 0
-// place4h()
-// console.log("4h ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place4v()
-// console.log("4v ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place3h()
-// console.log("3h ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place3v()
-// console.log("3v ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place2h()
-// console.log("2h ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place2v()
-// console.log("2v ship call RESULT (either placed or not placed)")
-// timeout = 0
-// place1()
-// console.log("1 ship call RESULT (either placed or not placed)")
 
 
 makeTable()
@@ -441,15 +408,13 @@ console.log("made the table for view")
 
 
 console.log("NotPlaced is: " + notPlaced)
-//Controller***********************************************
-//********************************************************
-//********************************************************
-//********************************************************
-//********************************************************
-//********************************************************
 
-//Controller***********************************************
-//***********************************************
+//Original Controller***************************************
+//********************************************************
+//********************************************************
+//********************************************************
+//********************************************************
+//********************************************************
 
 $(document).ready(function(){
   //on load you see table

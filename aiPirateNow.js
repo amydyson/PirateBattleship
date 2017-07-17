@@ -5,8 +5,11 @@
 //********************************************************
 //********************************************************
 //////////////// Model////////////////////////////////////////////////////
-
-
+var x
+var min
+var max
+var aiPadding = []
+var programCount = 0
 var torpedoesLeft
 var hits
 var shipArray=[]
@@ -42,11 +45,9 @@ const ship5 = "5"
 
 var board = new Array(100)
 board.fill(0)
-console.log("board now zeroes");
 
 var aiBoard = new Array(100)
 aiBoard.fill(0)
-console.log("board now zeroes");
 
 var aiLostShips = []
 var aiShotTds = []
@@ -64,35 +65,38 @@ var aiHits = 0
 var aiShipsLeft = 8
 var aiTorpedoesLeft = 100
 
-var aiFound1 = []
-var aiFound2 = []
-var aiFound3 = []
-var aiFound4 = []
-var aiFound5 = []
-var aiFound6 = []
-var aiFound7 = []
-var aiFound8 = []
 
-var ai1Direction = "lost"
-var ai2Direction = "lost"
-var ai3Direction = "lost"
-var ai4Direction = "lost"
-var ai5Direction = "lost"
-var ai6Direction = "lost"
-var ai7Direction = "lost"
-var ai8Direction = "lost"
+// This will be when we detect a ship will be either lost, unknown, horizontal or vertical
+var aiDirection = "lost"
+var aiFoundArray = [] // will hold Tds here
+
 
 
 ////////////////End of Regular Model////////////////////////////////////////////////////
 
 ////////////////Ai Model////////////////////////////////////////////////////
 
+function aiCoord(aiCurrentTd){
+    aiShotTds.push(aiCurrentTd)
+
+//get index of element so can splice it out of aiLostShips
+    y = aiLostShips.indexOf(aiCurrentTd)
+    aiLostShips.splice(y, 1);  // removes the x element of aiLostShips
+
+    console.log("after splice. aiLostShips is " + aiLostShips)
 
 
+    var temp = aiCurrentTd.toString()
+    if (temp < 10){
+        aiDig0 = "0"
+        aiDig1 = temp
+    } else {
+        aiDig0 = temp[0] //split td, get first digit
+        aiDig1 = temp[1] //split td, get 2nd digit
+    }
+}
 
 
-
-////////////////End of Ai Model////////////////////////////////////////////////////
 
 function shipRemove(){
     $("#board td").removeClass("torpedoed");
@@ -136,15 +140,77 @@ function shipRemove(){
     $("#aiBoard td").removeClass("ship5");
 }
 
+function paddingForVships(coordinate){
+    if (aiLostShips.includes(coordinate+1) && (coordinate != 9 || coordinate != 19 || coordinate != 29 || coordinate != 39 || coordinate != 49 || coordinate != 59 || coordinate != 69 || coordinate != 79 || coordinate != 89 || coordinate != 99)){
+        y = aiLostShips.indexOf(coordinate+1)
+        aiLostShips.splice(y, 1);  // removes the x element of aiLostShips
+        aiPadding.push(coordinate+1)
+    }
+
+    if (aiLostShips.includes(coordinate-1) && (coordinate != 0 || coordinate != 10 || coordinate != 20 || coordinate != 30 ||  coordinate !=40 || coordinate !=50 || coordinate != 60 || coordinate != 70 || coordinate != 80 || coordinate != 90)){
+        y = aiLostShips.indexOf(coordinate-1)
+        aiLostShips.splice(y, 1);  // removes the x element of aiLostShips
+        aiPadding.push(coordinate-1)
+    }
+}
+
+function paddingForHships(coordinate){
+    if (aiLostShips.includes(coordinate+10) && (coordinate != 90 || coordinate != 91 || coordinate != 92 || coordinate != 93 || coordinate != 94 || coordinate != 95 || coordinate != 96 || coordinate != 97 || coordinate != 98 || coordinate != 99)){
+        y = aiLostShips.indexOf(coordinate+10)
+        aiLostShips.splice(y, 1);  // removes the x element of aiLostShips
+        aiPadding.push(coordinate+10)
+    }
+
+    if (aiLostShips.includes(coordinate-10) && (coordinate != 0 || coordinate != 01 || coordinate != 02 || coordinate != 03 || coordinate != 04 || coordinate != 05 || coordinate != 06 || coordinate != 07 || coordinate != 08 || coordinate != 09)){
+        y = aiLostShips.indexOf(coordinate-10)
+        aiLostShips.splice(y, 1);  // removes the x element of aiLostShips
+        aiPadding.push(coordinate-10)
+    }
+}
+
+function paddingForVmax(coordinate){
+    if (aiLostShips.includes(coordinate+10)){
+        y = aiLostShips.indexOf(coordinate+10)
+        aiLostShips.splice(y, 1);  // removes the x element of aiLostShips
+        aiPadding.push(coordinate+10)
+    }
+
+}
+
+function paddingForVmin(coordinate){
+    if (aiLostShips.includes(coordinate-10)){
+        y = aiLostShips.indexOf(coordinate-10)
+        aiLostShips.splice(y, 1);  // removes the x element of aiLostShips
+        aiPadding.push(coordinate+10)
+    }
+
+}
+
+function paddingForHmax(coordinate){
+    if (aiLostShips.includes(coordinate+1)){
+        y = aiLostShips.indexOf(coordinate+1)
+        aiLostShips.splice(y, 1);  // removes the x element of aiLostShips
+        aiPadding.push(coordinate+10)
+    }
+
+}
+
+function paddingForHmin(coordinate){
+    if (aiLostShips.includes(coordinate-1)){
+        y = aiLostShips.indexOf(coordinate-1)
+        aiLostShips.splice(y, 1);  // removes the x element of aiLostShips
+        aiPadding.push(coordinate+10)
+    }
+
+}
+
 function check(coordinate){
     if ((board[coordinate] != 0 && board[coordinate] !=  undefined) || (board[coordinate+1] != 0 && board[coordinate+1] !=  undefined) ||
     (board[coordinate-1] != 0 && board[coordinate-1] !=  undefined) ||
     (board[coordinate+10] != 0 && board[coordinate+10] !=  undefined) ||
     (board[coordinate-10] != 0 && board[coordinate-10] !=  undefined)){
-    console.log("doesn't pass")
     checkArray.push("failed")
     }
-    else {console.log("passes");}
 } // end function check
 
 function aiCheck(coordinate){
@@ -152,10 +218,8 @@ function aiCheck(coordinate){
     (aiBoard[coordinate-1] != 0 && aiBoard[coordinate-1] !=  undefined) ||
     (aiBoard[coordinate+10] != 0 && aiBoard[coordinate+10] !=  undefined) ||
     (aiBoard[coordinate-10] != 0 && aiBoard[coordinate-10] !=  undefined)){
-    console.log("doesn't pass")
     checkArray.push("failed")
     }
-    else {console.log("passes");}
 } // end function check
 
 function place5h(){
@@ -164,13 +228,11 @@ function place5h(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 5h coordinate is now: " + coordinate)
 
   //place 5h ship on board array
   for (i=0; i <5; i++){
   board[coordinate + i] = ship5
  $("#"+ coordinate1+ (coordinate2+i)).addClass("ship5")
-  console.log("placing ship at " + (coordinate + i))
   } // end for
 
   // Give those 5 squares on the table the class "ship5"
@@ -186,7 +248,6 @@ function aiPlace5h(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 5h coordinate is now: " + coordinate)
 
   //place 5h ship on board array
   for (i=0; i <5; i++){
@@ -194,7 +255,6 @@ function aiPlace5h(){
  // $("#"+ coordinate1+ (coordinate2+i)).addClass("ship5")
  $("#aiBoard td").eq(coordinate + i).addClass("aiShip5");
 
-  console.log("placing ship at " + (coordinate + i))
   } // end for
 
   // Give those 5 squares on the table the class "ship5"
@@ -212,29 +272,21 @@ function place5v(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 5v coordinate is now: " + coordinate)
-      console.log("PLACE 5v SHIP")
       //place 5v ship on board array
       board[coordinate] = ship5
       $("#"+ coordinate1+ (coordinate2)).addClass("ship5")
-      console.log("placing ship at " + (coordinate))
       board[coordinate+10] = ship5
       $("#"+ (coordinate1+1)+ (coordinate2)).addClass("ship5")
-      console.log("placing ship at " + (coordinate+10))
       board[coordinate+20] = ship5
     //   $("#"+ (coordinate+20)).addClass("ship5")
       $("#"+ (coordinate1+2)+ (coordinate2)).addClass("ship5")
-      console.log("placing ship at " + (coordinate+20))
       board[coordinate+30] = ship5
     //   $("#"+ (coordinate+30)).addClass("ship5")
       $("#"+ (coordinate1+3)+ (coordinate2)).addClass("ship5")
-      console.log("placing ship at " + (coordinate+30))
       board[coordinate+40] = ship5
       $("#"+ (coordinate1+4)+ (coordinate2)).addClass("ship5")
 
     //   $("#"+ (coordinate+40)).addClass("ship5")
-      console.log("placing ship at " + (coordinate+40))
-
 
 
 
@@ -247,40 +299,31 @@ function aiPlace5v(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 5v coordinate is now: " + coordinate)
-      console.log("PLACE 5v SHIP")
       //place 5v ship on board array
       aiBoard[coordinate] = ship5
     //   $("#"+ coordinate1+ (coordinate2)).addClass("ship5")
       $("#aiBoard td").eq(coordinate).addClass("aiShip5");
 
-      console.log("placing ship at " + (coordinate))
       aiBoard[coordinate+10] = ship5
     //   $("#"+ (coordinate1+1)+ (coordinate2)).addClass("ship5")
       $("#aiBoard td").eq(coordinate + 10).addClass("aiShip5");
 
-      console.log("placing ship at " + (coordinate+10))
       aiBoard[coordinate+20] = ship5
     //   $("#"+ (coordinate+20)).addClass("ship5")
     //   $("#"+ (coordinate1+2)+ (coordinate2)).addClass("ship5")
       $("#aiBoard td").eq(coordinate + 20).addClass("aiShip5");
 
-      console.log("placing ship at " + (coordinate+20))
       aiBoard[coordinate+30] = ship5
     //   $("#"+ (coordinate+30)).addClass("ship5")
     //   $("#"+ (coordinate1+3)+ (coordinate2)).addClass("ship5")
       $("#aiBoard td").eq(coordinate + 30).addClass("aiShip5");
 
-      console.log("placing ship at " + (coordinate+30))
       aiBoard[coordinate+40] = ship5
     //   $("#"+ (coordinate1+4)+ (coordinate2)).addClass("ship5")
       $("#aiBoard td").eq(coordinate + 40).addClass("aiShip5");
 
 
     //   $("#"+ (coordinate+40)).addClass("ship5")
-      console.log("placing ship at " + (coordinate+40))
-
-
 
 
 } // end place5v function
@@ -292,17 +335,14 @@ function place4h(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 4h coordinate is now: " + coordinate)
   check(coordinate)
   check(coordinate + 1)
   check(coordinate + 2)
   check(coordinate + 3)
   timeout ++
   if (checkArray.includes("failed") && timeout <50){
-      console.log("call place4h again, timeout is " + timeout)
       place4h()
   }else if (timeout<50){
-      console.log("PLACE 4h SHIP")
       //place 4h ship on board array
       for (i=0; i <4; i++){
       board[coordinate + i] = ship4h
@@ -310,10 +350,9 @@ function place4h(){
     // $("#"+ (coordinate1)+ (coordinate2+i)).addClass("ship4")
     $("#"+ coordinate1+ (coordinate2+i)).addClass("ship4h")
 
-      console.log("placing ship at " + (coordinate + i))
       } // end for
   } // end else
-  else{console.log("CANNOT place 4h Ship!")
+  else{
   notPlaced++
   } //end else
 } // end place4h function
@@ -325,17 +364,14 @@ function aiPlace4h(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 4h coordinate is now: " + coordinate)
   aiCheck(coordinate)
   aiCheck(coordinate + 1)
   aiCheck(coordinate + 2)
   aiCheck(coordinate + 3)
   timeout ++
   if (checkArray.includes("failed") && timeout <50){
-      console.log("call place4h again, timeout is " + timeout)
       aiPlace4h()
   }else if (timeout<50){
-      console.log("PLACE 4h SHIP")
       //place 4h ship on board array
       for (i=0; i <4; i++){
       aiBoard[coordinate + i] = ship4h
@@ -345,10 +381,9 @@ function aiPlace4h(){
     $("#aiBoard td").eq(coordinate + i).addClass("aiShip4h");
 
 
-      console.log("placing ship at " + (coordinate + i))
       } // end for
   } // end else
-  else{console.log("CANNOT place 4h Ship!")
+  else{
   notPlaced++
   } //end else
 } // end place4h function
@@ -361,17 +396,14 @@ function place4v(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 4v coordinate is now: " + coordinate)
   check(coordinate)
   check(coordinate + 10)
   check(coordinate + 20)
   check(coordinate + 30)
   timeout ++
   if (checkArray.includes("failed")  && timeout <50){
-      console.log("call place4v again, timeout is " + timeout)
       place4v()
   }else if (timeout < 50){
-      console.log("PLACE 4v SHIP")
       //place 4v ship on board array
       board[coordinate] = ship4v
     //   $("#"+ (coordinate)).addClass("ship4")
@@ -379,21 +411,17 @@ function place4v(){
 
 
 
-      console.log("placing ship at " + (coordinate))
       board[coordinate+10] = ship4v
     //   $("#"+ (coordinate+10)).addClass("ship4")
       $("#"+ (coordinate1+1)+ (coordinate2)).addClass("ship4v")
-      console.log("placing ship at " + (coordinate+10))
       board[coordinate+20] = ship4v
     //   $("#"+ (coordinate+20)).addClass("ship4")
       $("#"+ (coordinate1+2)+ (coordinate2)).addClass("ship4v")
-      console.log("placing ship at " + (coordinate+20))
       board[coordinate+30] = ship4v
     //   $("#"+ (coordinate+30)).addClass("ship4")
       $("#"+ (coordinate1+3)+ (coordinate2)).addClass("ship4v")
-      console.log("placing ship at " + (coordinate+30))
   } // end else
-    else{console.log("CANNOT place 4v Ship!")
+    else{
     notPlaced++} //end else
 } // end place4v function
 
@@ -404,17 +432,14 @@ function aiPlace4v(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 4v coordinate is now: " + coordinate)
   aiCheck(coordinate)
   aiCheck(coordinate + 10)
   aiCheck(coordinate + 20)
   aiCheck(coordinate + 30)
   timeout ++
   if (checkArray.includes("failed")  && timeout <50){
-      console.log("call place4v again, timeout is " + timeout)
       aiPlace4v()
   }else if (timeout < 50){
-      console.log("PLACE 4v SHIP")
       //place 4v ship on board array
       aiBoard[coordinate] = ship4v
     //   $("#"+ (coordinate)).addClass("ship4")
@@ -423,28 +448,24 @@ function aiPlace4v(){
       $("#aiBoard td").eq(coordinate).addClass("aiShip4v");
 
 
-      console.log("placing ship at " + (coordinate))
       aiBoard[coordinate+10] = ship4v
     //   $("#"+ (coordinate+10)).addClass("ship4")
     //   $("#"+ (coordinate1+1)+ (coordinate2)).addClass("ship4v")
 
       $("#aiBoard td").eq(coordinate + 10).addClass("aiShip4v");
 
-      console.log("placing ship at " + (coordinate+10))
       aiBoard[coordinate+20] = ship4v
     //   $("#"+ (coordinate+20)).addClass("ship4")
     //   $("#"+ (coordinate1+2)+ (coordinate2)).addClass("ship4v")
       $("#aiBoard td").eq(coordinate + 20).addClass("aiShip4v");
 
-      console.log("placing ship at " + (coordinate+20))
       aiBoard[coordinate+30] = ship4v
     //   $("#"+ (coordinate+30)).addClass("ship4")
     //   $("#"+ (coordinate1+3)+ (coordinate2)).addClass("ship4v")
       $("#aiBoard td").eq(coordinate + 30).addClass("aiShip4v");
 
-      console.log("placing ship at " + (coordinate+30))
   } // end else
-    else{console.log("CANNOT place 4v Ship!")
+    else{
     notPlaced++} //end else
 } // end place4v function
 
@@ -456,25 +477,21 @@ function place3h(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 3h coordinate is now: " + coordinate)
   check(coordinate)
   check(coordinate + 1)
   check(coordinate + 2)
   timeout++
   if (checkArray.includes("failed")  && timeout <50){
-      console.log("call place3h again, timeout is " + timeout)
       place3h()
   }else if (timeout < 50){
-      console.log("PLACE 3h SHIP")
       //place 3h ship on board array
       for (i=0; i <3; i++){
       board[coordinate + i] = ship3h
       $("#"+ (coordinate1)+ (coordinate2+i)).addClass("ship3h")
 
-      console.log("placing ship at " + (coordinate + i))
       } // end for
   } // end else
-    else{console.log("CANNOT place 3h Ship!")
+    else{
     notPlaced++} //end else}
 } // end place3h function
 
@@ -486,16 +503,13 @@ function aiPlace3h(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 3h coordinate is now: " + coordinate)
   aiCheck(coordinate)
   aiCheck(coordinate + 1)
   aiCheck(coordinate + 2)
   timeout++
   if (checkArray.includes("failed")  && timeout <50){
-      console.log("call place3h again, timeout is " + timeout)
       aiPlace3h()
   }else if (timeout < 50){
-      console.log("PLACE 3h SHIP")
       //place 3h ship on board array
       for (i=0; i <3; i++){
       aiBoard[coordinate + i] = ship3h
@@ -503,10 +517,9 @@ function aiPlace3h(){
       $("#aiBoard td").eq(coordinate + i).addClass("aiShip3h");
 
 
-      console.log("placing ship at " + (coordinate + i))
       } // end for
   } // end else
-    else{console.log("CANNOT place 3h Ship!")
+    else{
     notPlaced++} //end else}
 } // end place3h function
 
@@ -517,31 +530,25 @@ function place3v(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 3v coordinate is now: " + coordinate)
   check(coordinate)
   check(coordinate + 10)
   check(coordinate + 20)
   timeout
   if (checkArray.includes("failed")  && timeout <50){
-      console.log("call place3v again, timeout is " + timeout)
       place3v()
   }else if (timeout < 50){
-      console.log("PLACE 3v SHIP")
       //place 4v ship on board array
       board[coordinate] = ship3v
      $("#"+ (coordinate1)+ (coordinate2)).addClass("ship3v")
     //   $("#"+ (coordinate)).addClass("ship3")
-      console.log("placing ship at " + (coordinate))
       board[coordinate+10] = ship3v
     //   $("#"+ (coordinate+10)).addClass("ship3")
       $("#"+ (coordinate1+1)+ (coordinate2)).addClass("ship3v")
-      console.log("placing ship at " + (coordinate+10))
       board[coordinate+20] = ship3v
     //   $("#"+ (coordinate+20)).addClass("ship3")
       $("#"+ (coordinate1+2)+ (coordinate2)).addClass("ship3v")
-      console.log("placing ship at " + (coordinate+20))
   } // end else
-    else{console.log("CANNOT place 3v Ship!")
+    else{
     notPlaced++} //end else}
 } // end place3v function
 
@@ -552,37 +559,31 @@ function aiPlace3v(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 3v coordinate is now: " + coordinate)
   aiCheck(coordinate)
   aiCheck(coordinate + 10)
   aiCheck(coordinate + 20)
   timeout
   if (checkArray.includes("failed")  && timeout <50){
-      console.log("call place3v again, timeout is " + timeout)
       aiPlace3v()
   }else if (timeout < 50){
-      console.log("PLACE 3v SHIP")
       //place 4v ship on board array
       aiBoard[coordinate] = ship3v
     //  $("#"+ (coordinate1)+ (coordinate2)).addClass("ship3v")
      $("#aiBoard td").eq(coordinate).addClass("aiShip3v");
 
     //   $("#"+ (coordinate)).addClass("ship3")
-      console.log("placing ship at " + (coordinate))
       aiBoard[coordinate+10] = ship3v
     //   $("#"+ (coordinate+10)).addClass("ship3")
     //   $("#"+ (coordinate1+1)+ (coordinate2)).addClass("ship3v")
       $("#aiBoard td").eq(coordinate + 10).addClass("aiShip3v");
 
-      console.log("placing ship at " + (coordinate+10))
       aiBoard[coordinate+20] = ship3v
     //   $("#"+ (coordinate+20)).addClass("ship3")
     //   $("#"+ (coordinate1+2)+ (coordinate2)).addClass("ship3v")
       $("#aiBoard td").eq(coordinate + 20).addClass("aiShip3v");
 
-      console.log("placing ship at " + (coordinate+20))
   } // end else
-    else{console.log("CANNOT place 3v Ship!")
+    else{
     notPlaced++} //end else}
 } // end place3v function
 
@@ -593,25 +594,21 @@ function place2h(){
   var coordinate2 = Math.floor(Math.random() * 5)
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
-  console.log("the 2h coordinate is now: " + coordinate)
   check(coordinate)
   check(coordinate + 1)
   timeout++
   if (checkArray.includes("failed")  && timeout <50){
-      console.log("call place2h again, timeout is " + timeout)
       place2h()
   }else if (timeout < 50){
-      console.log("PLACE 2h SHIP")
       //place 2h ship on board array
       for (i=0; i <2; i++){
       board[coordinate + i] = ship2h
     //   $("#"+ (coordinate + i)).addClass("ship2")
       $("#"+ (coordinate1)+ (coordinate2 + i)).addClass("ship2h")
 
-      console.log("placing ship at " + (coordinate + i))
       } // end for
   } // end else
-    else{console.log("CANNOT place 2h Ship!")
+    else{
     notPlaced++} //end else}
 } // end place2h function
 
@@ -621,15 +618,12 @@ function aiPlace2h(){
   var coordinate2 = Math.floor(Math.random() * 5)
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
-  console.log("the 2h coordinate is now: " + coordinate)
   aiCheck(coordinate)
   aiCheck(coordinate + 1)
   timeout++
   if (checkArray.includes("failed")  && timeout <50){
-      console.log("call place2h again, timeout is " + timeout)
       aiPlace2h()
   }else if (timeout < 50){
-      console.log("PLACE 2h SHIP")
       //place 2h ship on board array
       for (i=0; i <2; i++){
       aiBoard[coordinate + i] = ship2h
@@ -639,10 +633,9 @@ function aiPlace2h(){
       $("#aiBoard td").eq(coordinate + i).addClass("aiShip2h");
 
 
-      console.log("placing ship at " + (coordinate + i))
       } // end for
   } // end else
-    else{console.log("CANNOT place 2h Ship!")
+    else{
     notPlaced++} //end else}
 } // end place2h function
 
@@ -654,27 +647,22 @@ function place2v(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log("the 2v coordinate is now: " + coordinate)
   check(coordinate)
   check(coordinate + 10)
   timeout++
   if (checkArray.includes("failed")  && timeout <50){
-      console.log("call place2v again, timeout is " + timeout)
       place2v()
   }else if (timeout < 50){
-      console.log("PLACE 2v SHIP")
       //place 2v ship on board array
       board[coordinate] = ship2v
     //   $("#"+ (coordinate)).addClass("ship2")
       $("#"+ (coordinate1)+ (coordinate2)).addClass("ship2v")
-      console.log("placing ship at " + (coordinate))
       board[coordinate+10] = ship2v
     //   $("#"+ (coordinate+10)).addClass("ship4")
       $("#"+ (coordinate1+1)+ (coordinate2)).addClass("ship2v")
-      console.log("placing ship at " + (coordinate+10))
 
   } // end else
-    else{console.log("CANNOT place 2v Ship!")
+    else{
     notPlaced++} //end else}
 } // end place2v function
 
@@ -686,28 +674,23 @@ function aiPlace2v(){
   var coordinate = coordinate1.toString() + coordinate2.toString();
   coordinate = +coordinate;
 
-  console.log(" !!!!! the ai 2v coordinate is now: " + coordinate)
   aiCheck(coordinate)
   aiCheck(coordinate + 10)
   timeout++
   if (checkArray.includes("failed")  && timeout <50){
-      console.log("call ai place2v again, timeout is " + timeout)
       aiPlace2v()
   }else if (timeout < 50){
-      console.log("!!!!!!! PLACE ai 2v SHIP")
       //place 2v ship on board array
       aiBoard[coordinate] = ship2v
     //   $("#"+ (coordinate)).addClass("ship2")
     //   $("#"+ (coordinate1)+ (coordinate2)).addClass("ship2v")
       $("#aiBoard td").eq(coordinate).addClass("aiShip2v");
-      console.log("ai !!!!! placing ship at " + (coordinate))
       aiBoard[coordinate+10] = ship2v
     //   $("#"+ (coordinate+10)).addClass("ship4")
     //   $("#"+ (coordinate1+1)+ (coordinate2)).addClass("ship2v")
       $("#aiBoard td").eq(coordinate + 10).addClass("aiShip2v");
-      console.log("placing ship at " + (coordinate+10))
   } // end else
-    else{console.log("CANNOT place 2v Ship!")
+    else{
     notPlaced++} //end else}
 } // end place2v function
 
@@ -721,21 +704,17 @@ function place1(){
   coordinate = +coordinate;
 
   check(coordinate)
-  console.log("the 1 coordinate is now: " + coordinate)
   // check(coordinate)
   timeout++
   if (checkArray.includes("failed")  && timeout <40){
-      console.log("call place1 again, timeout is " + timeout)
       place1()
   }else if (timeout < 39){
-      console.log("PLACE 1 SHIP")
       //place 1 ship on board array
       board[coordinate] = ship1
     //   $("#"+ (coordinate)).addClass("ship1")
       $("#"+ (coordinate1)+ (coordinate2)).addClass("ship1")
-      console.log("placing ship1 at " + (coordinate))
   } // end else
-    else{console.log("CANNOT place 1 Ship!")
+    else{
     notPlaced++} //end else}
 } // end place1 function
 
@@ -748,27 +727,23 @@ function aiPlace1(){
   coordinate = +coordinate;
 
   aiCheck(coordinate)
-  console.log("the 1 coordinate is now: " + coordinate)
   // check(coordinate)
   timeout++
   if (checkArray.includes("failed")  && timeout <70){
-      console.log("call place1 again, timeout is " + timeout)
       aiPlace1()
   }else if (timeout < 70){
-      console.log("PLACE 1 SHIP")
       //place 1 ship on board array
       aiBoard[coordinate] = ship1
      $("#aiBoard td").eq(coordinate).addClass("aiShip1");
-      console.log("placing ship1 at " + (coordinate))
   } // end else
-    else{console.log("CANNOT place 1 Ship!")
+    else{
     notPlaced++} //end else}
 } // end place1 function
 
 
 //build board for view in html
 //eq(i) gets element of position i
-function makeTable() {
+function makeTables() {
   for (i = 0; i < 10; i++){
     $("#board").append("<tr>")
     $("tr").eq(i).attr("id", "row" + i) //for tr[i] we add an id="row[i]"
@@ -789,35 +764,27 @@ function makeTable() {
 //show ships function
 function showAllShips() {
   if($("#board td").hasClass("ship5")) {
-    console.log("added ship5show")
     $(".ship5").addClass("ship5show")
   }
   if ($("#board td").hasClass("ship4h")) {
-    console.log("added ship4hshow")
     $(".ship4h").addClass("ship4hshow")
   }
   if ($("#board td").hasClass("ship4v")) {
-    console.log("added ship4vshow")
     $(".ship4v").addClass("ship4vshow")
   }
   if($("#board td").hasClass("ship3h")) {
-    console.log("added ship3hshow")
     $(".ship3h").addClass("ship3hshow")
   }
   if($("#board td").hasClass("ship3v")) {
-    console.log("added ship3vshow")
     $(".ship3v").addClass("ship3vshow")
   }
   if($("#board td").hasClass("ship2h")) {
-    console.log("added ship2hshow")
     $(".ship2h").addClass("ship2hshow")
   }
   if($("#board td").hasClass("ship2v")) {
-    console.log("added ship2vshow")
     $(".ship2v").addClass("ship2vshow")
   }
   if($("#board td").hasClass("ship1")) {
-    console.log("added ship1show")
     $(".ship1").addClass("ship1show")
   }
   if($("#board td").hasClass("hit")){
@@ -827,35 +794,28 @@ function showAllShips() {
 
 function aiShowAllShips() {
   if($("#aiBoard td").hasClass("aiShip5")) {
-    console.log("added ship5show")
+
     $(".aiShip5").addClass("ship5show")
   }
   if ($("#aiBoard td").hasClass("aiShip4h")) {
-    console.log("added ship4hshow")
     $(".aiShip4h").addClass("ship4hshow")
   }
   if ($("#aiBoard td").hasClass("aiShip4v")) {
-    console.log("added ship4vshow")
     $(".aiShip4v").addClass("ship4vshow")
   }
   if($("#aiBoard td").hasClass("aiShip3h")) {
-    console.log("added ship3hshow")
     $(".aiShip3h").addClass("ship3hshow")
   }
   if($("#aiBoard td").hasClass("aiShip3v")) {
-    console.log("added ship3vshow")
     $(".aiShip3v").addClass("ship3vshow")
   }
   if($("#aiBoard td").hasClass("aiShip2h")) {
-    console.log("added ship2hshow")
     $(".aiShip2h").addClass("ship2hshow")
   }
   if($("#aiBoard td").hasClass("aiShip2v")) {
-    console.log("added ship2vshow")
     $(".aiShip2v").addClass("ship2vshow")
   }
   if($("#aiBoard td").hasClass("aiShip1")) {
-    console.log("added ship1show")
     $(".aiShip1").addClass("ship1show")
   }
   if($("#aiBoard td").hasClass("aiHit")){
@@ -865,25 +825,18 @@ function aiShowAllShips() {
 
 
 
-
-makeTable()
-console.log("made the table for view")
-
-
-console.log("NotPlaced is: " + notPlaced)
-//Controller***********************************************
-//********************************************************
-//********************************************************
-//********************************************************
-//********************************************************
-//********************************************************
+// Do this so board is visible on first website load
+makeTables()
 
 //Controller***********************************************
-//***********************************************
+//********************************************************
+//********************************************************
+//********************************************************
+//********************************************************
 
 $(document).ready(function(){
-  //on load you see table
-  makeTable() //create board
+
+  makeTables() //create board again for new game
   $("td").off("click"); //clicking off until start button pressed
 
   //Once start button clicked all this happens:
@@ -901,7 +854,6 @@ $(document).ready(function(){
     notPlaced = 0;
     shipsLeft = 8;
     board.fill(0)
-    console.log("board now zeroes");
     h2 = 0
     v2 = 0
     h3 = 0
@@ -917,12 +869,6 @@ $(document).ready(function(){
     aiH4 = 0
     aiV4 = 0
     aiHv5 = 0
-
-console.log("torpedoesLeft is " + torpedoesLeft)
-console.log("shipsLeft is " + shipsLeft)
-console.log("hits is " + hits)
-
-
 
 
     // clear text on screen
@@ -941,10 +887,8 @@ console.log("hits is " + hits)
     ///***randomly decide to place EITHER a 5 block horizontal ship OR a 5 block vertical ship
     if(choose5 ==0){
        place5h()
-       console.log("5h ship placed")
      }else{
        place5v()
-       console.log("5v ship placed")
      }
 //Get board:
 
@@ -965,13 +909,12 @@ console.log("hits is " + hits)
 
 //Get ai board
 choose5 = Math.floor(Math.random() * 2)
+choose5 = 0  //for now choose horizontal only
 
     if(choose5 ==0){
        aiPlace5h()
-       console.log("5h ship placed")
      }else{
        aiPlace5v()
-       console.log("5v ship placed")
      }
 
     timeout = 0
@@ -989,19 +932,19 @@ choose5 = Math.floor(Math.random() * 2)
     timeout = 0
     aiPlace1()
 
-    aiShowAllShips()
+    aiShowAllShips() //show the player's ships that the pirate will try to sink
 
 
 
     //each time user clicks specific square:
     $("#board td").click(function(){
+
+        programCount++
+        console.log("programCount right after td.click is " + programCount)
+
       currentTd = $(this).attr("id") //grab id of td clicked
       dig0 = currentTd[0] //split td, get first digit
       dig1 = currentTd[1] //split td, get 2nd digit
-      console.log("After click, currentTd is " + currentTd)
-      console.log("this is " + $(this).attr("id"))
-      console.log("board[currentTd] is " + board[currentTd])
-      console.log("dig0 is: " + dig0 + " and dig1 is: " + dig1)
 
 // board[currentTd] returning undefined  in 0 row if currentTd has a 0 in front, so get rid of 0
         if (currentTd < 10){
@@ -1028,7 +971,6 @@ if (board[currentTd] === ship1){
    audio = $("#abandonShip")[0];
    audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
-   console.log("1 block ship hit, shipsLeft is: " + shipsLeft)
      $(".ship1").addClass("ship1show")
 }
 
@@ -1040,14 +982,9 @@ if (board[currentTd] === ship2h){  // if the 2h ship is hit
    audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    $(".ship2h").addClass("ship2hshow")
-   console.log("currentTd is " + currentTd)
-   console.log("this is " + $(this).attr("id"))
-   console.log("2 block ship hit, shipsLeft is: " + shipsLeft)
    } else {
        audio = $("#fire")[0];
        audio.play();
-       console.log("currentTd is " + currentTd)
-       console.log("this is " + $(this).attr("id"))
    }
 }
 
@@ -1059,12 +996,9 @@ if (board[currentTd] === ship2v){  // if the 2v ship is hit
    audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    $(".ship2v").addClass("ship2vshow")
-   console.log("2 block ship hit, shipsLeft is: " + shipsLeft)
    }else {
        audio = $("#fire")[0];
        audio.play();
-       console.log("currentTd is " + currentTd)
-       console.log("this is " + $(this).attr("id"))
    }
 }
 
@@ -1076,12 +1010,9 @@ if (board[currentTd] === ship3h){  // if the 3h ship is hit
    audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
    $(".ship3h").addClass("ship3hshow")
-   console.log("3 block ship hit, shipsLeft is: " + shipsLeft)
    }else {
        audio = $("#fire")[0];
        audio.play();
-       console.log("currentTd is " + currentTd)
-       console.log("this is " + $(this).attr("id"))
    }
 }
 
@@ -1092,14 +1023,11 @@ if (board[currentTd] === ship3v){  // if the 3v ship is hit
    audio = $("#abandonShip")[0];
    audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
-   console.log("3 block ship hit, shipsLeft is: " + shipsLeft)
    $(".ship3v").addClass("ship3vshow")
 
    }else {
        audio = $("#fire")[0];
        audio.play();
-       console.log("currentTd is " + currentTd)
-       console.log("this is " + $(this).attr("id"))
    }
 }
 
@@ -1110,13 +1038,10 @@ if (board[currentTd] === ship4h){  // if the 4h ship is hit
    audio = $("#abandonShip")[0];
    audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
-   console.log("4 block ship hit, shipsLeft is: " + shipsLeft)
    $(".ship4h").addClass("ship4hshow")
    }else {
        audio = $("#fire")[0];
        audio.play();
-       console.log("currentTd is " + currentTd)
-       console.log("this is " + $(this).attr("id"))
    }
 }
 
@@ -1127,13 +1052,10 @@ if (board[currentTd] === ship4v){  // if the 4v ship is hit
    audio = $("#abandonShip")[0];
    audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
-   console.log("4 block ship hit, shipsLeft is: " + shipsLeft)
    $(".ship4v").addClass("ship4vshow")
    }else {
        audio = $("#fire")[0];
        audio.play();
-       console.log("currentTd is " + currentTd)
-       console.log("this is " + $(this).attr("id"))
 
    }
 }
@@ -1145,13 +1067,10 @@ if (board[currentTd] === ship5){  // if the 5h or 5v ship is hit
    audio = $("#abandonShip")[0];
    audio.play()
    $("#shipTracker").text("Ships left: " + shipsLeft);
-   console.log("5 block ship hit, shipsLeft is: " + shipsLeft)
    $(".ship5").addClass("ship5show")
    }else {
        audio = $("#fire")[0];
        audio.play();
-       console.log("currentTd is " + currentTd)
-       console.log("this is " + $(this).attr("id"))
 
    }
 }
@@ -1165,18 +1084,18 @@ if (board[currentTd] === ship5){  // if the 5h or 5v ship is hit
         if (shipsLeft === 0) {
           $("#winLose").text("You Won! You sank all pirate ships with 50 cannonballs");
           $("td").off("click");
-          console.log("calling showAllShips function because won")
           showAllShips()
-          $(".btn").show(); //show start button
+          $("#start").show(); //show start button
         }
       } else { //turns square dark blue (miss)
 
       $(this).addClass("torpedoed");
-      console.log("currentTd is " + currentTd)
       $(this).off("click"); //can't click same square twice
       }
-    torpedoesLeft--;
+
     //update torpedo count on screen
+    torpedoesLeft--;
+
     $("#torpedoTracker").text("Cannonballs left: " + torpedoesLeft);
     //check if used 25 torpedos.  Game over, show start button, turn board click off
     if(torpedoesLeft === 0){
@@ -1192,7 +1111,6 @@ if (board[currentTd] === ship5){  // if the 5h or 5v ship is hit
 
 
       $("td").off("click");
-      console.log("callind showAllShips if you lose")
       showAllShips() //after game over, show ships they did not hit
       $("#start").show();
     }
@@ -1201,126 +1119,127 @@ if (board[currentTd] === ship5){  // if the 5h or 5v ship is hit
 ///////////////////////End of regular portion/////////////////////////////////////////////
 ///////////Beginning of Ai Portion////////////////////////////////////////////////////////
 //Pause to emulation real life:
-console.log("Right before time out")
-var delayMillis = 1000; //1 second
 
-setTimeout(function() {
-  //your code to be executed after 1 second
+// if there's no located ship get a random number
 
 
-
-
-
-
-
-console.log("aiLostShips is: " + aiLostShips)
-
-if (aiHits === 0 ){ // get a random coordinate
+if (aiDirection == "lost" ){ // get a random coordinate
 
     aiRandom = aiLostShips.length - 1;
 
-    console.log("aiRandom is " + aiRandom )
     x = Math.floor(Math.random() * aiRandom)
 
-    console.log("x is "+ x + " after x = aiLostShips[Math.floor(Math.random() * aiRandom)] ")
-
     aiCurrentTd = aiLostShips[x]
-    aiLastTd = aiCurrentTd
 
-    console.log("from math.random, aiCurrentTd is " + aiCurrentTd)
+// adjust arrays by calling aiCoord
 
-    aiShotTds.push(aiCurrentTd)
-    console.log("aiShotTds is  " + aiShotTds)
+    // aiCoord(aiCurrentTd)
 
-    y = aiLostShips.indexOf(x)
-
-    aiLostShips.splice(y, 1);  // removes the x element of aiLostShips
+    console.log("aiDirection aftercall aiCurrentTd on line 1059 is " + aiDirection + ", aicurrentTd is " + aiCurrentTd + ",  lastTd is " + aiLastTd)
 
 
-    console.log("after splicing, aiLostShips is: " + aiLostShips)
-
-    var temp = aiCurrentTd.toString()
-    if (temp < 10){
-        aiDig0 = "0"
-        aiDig1 = temp
-    } else {
-        aiDig0 = temp[0] //split td, get first digit
-        aiDig1 = temp[1] //split td, get 2nd digit
-    }
-
-}  //end aiHits =0   // get a random number
-
-if (aiHits > 0){
-
-if(!(ai1Direction === "sunk")){
-    console.log("calling sink1")
-  sink1()}
-  //
-  // sink2()
-  // sink3()
-  // sink4()
-  // sink5()
-  // sink6()
-  // sink7()
-  // sink8()
+} else if (aiDirection == "unknown"){
+x = aiFoundArray[0].toString()
+if (x < 10){
+    x = "0" + x
 }
 
-function sink2(){}
-
-function sink1(){
-        aiFound1.push(aiLastTd)
-        if ($("#aiBoard td").eq(aiLastTd).hasClass("aiShip1")){
-        ai1Direction = "sunk" // if it's a one-block it's sunk
-        sink2()
-        } else if
-            ($("#aiBoard td").eq(aiLastTd).hasClass("aiShip2h") &&
-            aiFound1.length === 2)
-            { ai1Direction = "sunk" // if it's a 2-block it's sunk
-            sink2()
-        } else if
-            ($("#aiBoard td").eq(aiLastTd).hasClass("aiShip2v") &&
-            aiFound1.length === 2)
-            { ai1Direction = "sunk" // if it's a 2-block it's sunk
-            sink2()
-        } else if
-            ($("#aiBoard td").eq(aiLastTd).hasClass("aiShip3h") &&
-            aiFound1.length === 3)
-            { ai1Direction = "sunk"// if it's a 2-block it's sunk
-            sink2()
-        } else if
-            ($("#aiBoard td").eq(aiLastTd).hasClass("aiShip3v") &&
-            aiFound1.length === 3)
-            { ai1Direction = "sunk" // if it's a 2-block it's sunk
-            sink2()
-        } else if
-            ($("#aiBoard td").eq(aiLastTd).hasClass("aiShip4h") &&
-            aiFound1.length === 4)
-            { ai1Direction = "sunk" // if it's a 2-block it's sunk
-            sink2()
-        } else if
-            ($("#aiBoard td").eq(aiLastTd).hasClass("aiShip4v") &&
-            aiFound1.length === 4)
-            { ai1Direction = "sunk" // if it's a 2-block it's sunk
-            sink2()
-        } else if
-            ($("#aiBoard td").eq(aiLastTd).hasClass("aiShip5") &&
-            aiFound1.length === 5)
-            { ai1Direction = "sunk" // if it's a 2-block it's sunk
-            sink2()
-        } else {
-            console.log("First ship isn't sunk, so time to figure out a coordinate by trying +1, -1, +10, -10")
-            aiCurrentTd = 27
-            aiDig0 = 2
-            aiDig1 = 7
-            console.log("aiCurrentTd set to 27 " + aiCurrentTd)
+    if (aiFoundArray.length == 1){  //only know ONE block so direction is unkown, look at last FOUND td for next TD
+        if (aiLostShips.includes(aiFoundArray[0]+1) && x[1] != 9){
+            aiCurrentTd = aiFoundArray[0] +1
+        } else if (aiLostShips.includes(aiFoundArray[0]-1) && x[1] != 0){
+            aiCurrentTd = aiFoundArray[0] - 1
+        } else if (aiLostShips.includes(aiFoundArray[0]+10) && x[0] != 9){
+            aiCurrentTd = aiFoundArray[0] +10
+        } else if (aiLostShips.includes(aiFoundArray[0]-10) && x[0] != 0){
+            aiCurrentTd = aiFoundArray[0] - 10
+        } else {     // this should never happen but just in case
+            aiRandom = aiLostShips.length - 1;
+            x = Math.floor(Math.random() * aiRandom)
+            aiCurrentTd = aiLostShips[x]
+            alert("THIS SHOULD NOT HAPPEN!")
         }
-    }  // end function sink1
+    } else {
+
+        alert("Should never get here! if aiArrayFound is greater than one, shouldn't be in Unknown territory!")
+
+    }
+
+} else if (aiDirection == "horizontal")
+
+{  //only know ONE block so direction is unkown, look at last FOUND td for next TD
+    x = aiFoundArray[aiFoundArray.length-1].toString()
+    if (x < 10){
+        x = "0" + x
+    }
+
+    max = Math.max.apply(null, aiFoundArray)
+    max = max.toString()
+    if (max <10){
+         max = "0" + max
+    }
+    min = Math.min.apply(null, aiFoundArray)
+    min = min.toString()
+    if (min <10){
+         min = "0" + min
+    }
+
+
+    if (aiLostShips.includes(+max+1) && (max[1] != "9")){
+        aiCurrentTd = (+max+1)
+    } else if (aiLostShips.includes(+min-1) && (min[1] != "0")){
+        aiCurrentTd = (+min-1)
+    } else {     // this should never happen but just in case
+        aiRandom = aiLostShips.length - 1;
+        x = Math.floor(Math.random() * aiRandom)
+        aiCurrentTd = aiLostShips[x]
+        alert("THIS SHOULD NOT HAPPEN!")
+    }
+
+}//end else if
+
+else if (aiDirection == "vertical")
+
+{  //only know ONE block so direction is unkown, look at last FOUND td for next TD
+
+    max = Math.max.apply(null, aiFoundArray)
+    max = max.toString()
+    if (max <10){
+         max = "0" + max
+    }
+    min = Math.min.apply(null, aiFoundArray)
+    min = min.toString()
+    if (min <10){
+         min = "0" + min
+    }
 
 
 
-//
-// } // end if aiHits == 1
-// board[currentTd] returning undefined  in 0 row if currentTd has a 0 in front, so get rid of 0
+
+        if (aiLostShips.includes(+max+10) && (max[0] != "9")){
+            aiCurrentTd = (+max+10)
+        } else if (aiLostShips.includes(+min-10) && (min[0] != "0")){
+            aiCurrentTd = (+min-10)
+        } else {     // this should never happen but just in case
+            aiRandom = aiLostShips.length - 1;
+            x = Math.floor(Math.random() * aiRandom)
+            aiCurrentTd = aiLostShips[x]
+            alert("THIS SHOULD NOT HAPPEN!")
+
+        }
+
+}
+
+
+
+//adjust arrays
+    aiCoord(aiCurrentTd)
+//save Td for next time
+    aiLastTd = aiCurrentTd
+
+    console.log("aiDirection on line 1117 is " + aiDirection + ", aicurrentTd is " + aiCurrentTd + ",  lastTd is " + aiLastTd)
+
+//now check board to see if there's a hit
 
 //   turn square red or blue if ship is hit or not
 if (aiBoard[aiCurrentTd] === ship1 || aiBoard[aiCurrentTd] === ship2h || aiBoard[aiCurrentTd] === ship2v || aiBoard[aiCurrentTd] === ship3h || aiBoard[aiCurrentTd] === ship3v || aiBoard[aiCurrentTd] === ship4h || aiBoard[aiCurrentTd] === ship4v || aiBoard[aiCurrentTd] === ship5 ){
@@ -1345,102 +1264,228 @@ if (aiBoard[aiCurrentTd] === ship1 || aiBoard[aiCurrentTd] === ship2h || aiBoard
 if (aiBoard[aiCurrentTd] === ship1){
 aiShipsLeft--
 $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
+aiDirection = "lost"   // this shouldn't be necessary just a double check
+
+
+paddingForVships(aiCurrentTd)
+paddingForHships(aiCurrentTd)
+
+
+console.log("found ship1, aiDirection set to Lost")
 }
 
 if (aiBoard[aiCurrentTd]=== ship2h){  // if the 2h ship is hit
+
+    console.log("found ship2h")
+
 aiH2++                            //increment 2h counter
-if (aiH2 === 2){                 //if both block of 2h ship is hit
-aiShipsLeft--                    //decrement shipsLeft
+    if (aiH2 === 2){                 //if both block of 2h ship is hit
+    aiShipsLeft--                    //decrement shipsLeft
+    aiDirection = "lost"             // set to lost to look for new ship randomly
 
-$("#aiShipTracker").text("Ships left: " + aiShipsLeft);
+    aiFoundArray.push(aiCurrentTd)
 
-} else {
- // audio = $("#fire")[0];
- // audio.play();
- // console.log("currentTd is " + currentTd)
- // console.log("this is " + $(this).attr("id"))
-}
+    paddingForHships(aiFoundArray[0])
+    paddingForHships(aiFoundArray[1])
+    paddingForVships(aiFoundArray[0])
+    paddingForVships(aiFoundArray[1])
+
+    aiFoundArray = []
+
+
+
+    $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
+
+    } else {
+        aiDirection = "unknown" // if ONE block found
+        aiFoundArray.push(aiCurrentTd)
+        }
+    // {
+    //     if (aiH2 == 1){
+    //         aiDirection = "unknown"
+    //     }else {
+    //     aiDirection = "unknown"
+    //     aiFoundArray.push(aiCurrentTd)
+    //     }
+    // }
 }
 
 if (aiBoard[aiCurrentTd] === ship2v){  // if the 2v ship is hit
 aiV2++                            //increment 2v counter
 if (aiV2 === 2){                 //if both block of 2v ship is hit
 aiShipsLeft--                    //decrement shipsLeft
+aiDirection = "lost"             // set to lost to look for new ship randomly
+aiFoundArray.push(aiCurrentTd)
+
+paddingForVships(aiFoundArray[0])
+paddingForVships(aiFoundArray[1])
+paddingForHships(aiFoundArray[0])
+paddingForHships(aiFoundArray[1])
+
+aiFoundArray = []
 
 $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
 // $(".ship2v").addClass("ship2vshow")
-console.log("2 block ship hit, shipsLeft is: " + aiShipsLeft)
 }else {
- // audio = $("#fire")[0];
- // audio.play();
- // console.log("currentTd is " + currentTd)
- // console.log("this is " + $(this).attr("id"))
-}
+   aiDirection = "unknown" // if ONE block found
+   aiFoundArray.push(aiCurrentTd)
+   }
+
 }
 
 if (aiBoard[aiCurrentTd] === ship3h){  // if the 3h ship is hit
 aiH3++                            //increment 3h counter
 if (aiH3 === 3){                 //if both block of 3h ship is hit
 aiShipsLeft--                    //decrement shipsLeft
+aiDirection = "lost"             // set to lost to look for new ship randomly
+aiFoundArray.push(aiCurrentTd)
+max = Math.max.apply(null, aiFoundArray)
+min = Math.min.apply(null, aiFoundArray)
+
+paddingForHships(aiFoundArray[0])
+paddingForHships(aiFoundArray[1])
+paddingForHships(aiFoundArray[2])
+
+// y = aiLostShips.indexOf(max)
+// paddingForVships(aiFoundArray[y])
+//
+// y = aiLostShips.indexOf(min)
+// paddingForVships(aiFoundArray[y])
+
+paddingForVships(max)
+paddingForVships(min)
+
+aiFoundArray = []
 
 $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
 // $(".ship3h").addClass("ship3hshow")
-// console.log("3 block ship hit, shipsLeft is: " + shipsLeft)
 }else {
- // audio = $("#fire")[0];
- // audio.play();
- // console.log("currentTd is " + currentTd)
- // console.log("this is " + $(this).attr("id"))
+    if (aiH3 == 1){
+        aiDirection = "unknown"
+        aiFoundArray.push(aiCurrentTd)
+    }else {
+    aiDirection = "horizontal"
+    aiFoundArray.push(aiCurrentTd)
+    }
+
 }
 }
 
 if (aiBoard[aiCurrentTd] === ship3v){  // if the 3v ship is hit
-aiV3++                            //increment 3v counter
-if (aiV3 === 3){                 //if both block of 3v ship is hit
-aiShipsLeft--                    //decrement shipsLeft
+    aiV3++                            //increment 3v counter
+    if (aiV3 === 3){                 //if both block of 3v ship is hit
+    aiShipsLeft--                    //decrement shipsLeft
+    aiDirection = "lost"
 
-$("#aiShipTracker").text("Ships left: " + aiShipsLeft);
-// console.log("3 block ship hit, shipsLeft is: " + aiShipsLeft)
-// $(".ship3v").addClass("ship3vshow")
+    aiFoundArray.push(aiCurrentTd)
+    max = Math.max.apply(null, aiFoundArray)
+    min = Math.min.apply(null, aiFoundArray)
 
-}else {
- // audio = $("#fire")[0];
- // audio.play();
- // console.log("currentTd is " + currentTd)
- // console.log("this is " + $(this).attr("id"))
-}
+    paddingForVships(aiFoundArray[0])
+    paddingForVships(aiFoundArray[1])
+    paddingForVships(aiFoundArray[2])
+
+    // y = aiLostShips.indexOf(max)
+    // paddingForHships(aiFoundArray[y])
+    //
+    // y = aiLostShips.indexOf(min)
+    // paddingForHships(aiFoundArray[y])
+
+    paddingForHships(max)
+    paddingForHships(min)
+
+
+    aiFoundArray = []
+
+    $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
+    // $(".ship3v").addClass("ship3vshow")
+
+    }else {
+
+        if (aiV3 == 1){
+            aiDirection = "unknown"
+            aiFoundArray.push(aiCurrentTd)
+        }else {
+        aiDirection = "vertical"
+        aiFoundArray.push(aiCurrentTd)
+       }
+     }
 }
 
 if (aiBoard[aiCurrentTd] === ship4h){  // if the 4h ship is hit
-aiH4++                            //increment 4h counter
-if (aiH4 === 4){                 //if both block of 4h ship is hit
-aiShipsLeft--                    //decrement shipsLeft
+    aiH4++                            //increment 4h counter
+    if (aiH4 === 4){                 //if both block of 4h ship is hit
+    aiShipsLeft--                    //decrement shipsLeft
+    aiDirection = "lost"
 
-$("#aiShipTracker").text("Ships left: " + aiShipsLeft);
-// console.log("4 block ship hit, shipsLeft is: " + shipsLeft)
-// $(".ship4h").addClass("ship4hshow")
-}else {
- // audio = $("#fire")[0];
- // audio.play();
- // console.log("currentTd is " + currentTd)
- // console.log("this is " + $(this).attr("id"))
-}
+    aiFoundArray.push(aiCurrentTd)
+    max = Math.max.apply(null, aiFoundArray)
+    min = Math.min.apply(null, aiFoundArray)
+
+    paddingForHships(aiFoundArray[0])
+    paddingForHships(aiFoundArray[1])
+    paddingForHships(aiFoundArray[2])
+    paddingForHships(aiFoundArray[3])
+
+    // y = aiLostShips.indexOf(max)
+    // paddingForVships(aiFoundArray[y])
+    //
+    // y = aiLostShips.indexOf(min)
+    // paddingForVships(aiFoundArray[y])
+
+    paddingForVships(max)
+    paddingForVships(min)
+
+
+    aiFoundArray = []
+
+    $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
+    // $(".ship4h").addClass("ship4hshow")
+    }else {
+        if (aiH4 == 1){
+            aiDirection = "unknown"
+            aiFoundArray.push(aiCurrentTd)
+        }else {
+        aiDirection = "horizontal"
+        aiFoundArray.push(aiCurrentTd)
+    }
+
+    }
 }
 
 if (aiBoard[aiCurrentTd]=== ship4v){  // if the 4v ship is hit
 aiV4++                            //increment 4v counter
 if (aiV4 === 4){                 //if both block of 4v ship is hit
 aiShipsLeft--                    //decrement shipsLeft
+aiDirection = "lost"
+
+aiFoundArray.push(aiCurrentTd)
+max = Math.max.apply(null, aiFoundArray)
+min = Math.min.apply(null, aiFoundArray)
+
+paddingForVships(aiFoundArray[0])
+paddingForVships(aiFoundArray[1])
+paddingForVships(aiFoundArray[2])
+paddingForVships(aiFoundArray[3])
+
+// y = aiLostShips.indexOf(max)
+paddingForHships(max)
+paddingForHships(min)
+//
+// y = aiLostShips.indexOf(min)
+
+aiFoundArray = []
 
 $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
-// console.log("4 block ship hit, shipsLeft is: " + shipsLeft)
 // $(".ship4v").addClass("ship4vshow")
 }else {
- // audio = $("#fire")[0];
- // audio.play();
- // console.log("currentTd is " + currentTd)
- // console.log("this is " + $(this).attr("id"))
-
+    if (aiV4 == 1){
+        aiDirection = "unknown"
+        aiFoundArray.push(aiCurrentTd)
+    }else {
+    aiDirection = "vertical"
+    aiFoundArray.push(aiCurrentTd)
+}
 }
 }
 
@@ -1448,18 +1493,43 @@ if (aiBoard[aiCurrentTd] === ship5){  // if the 5h or 5v ship is hit
 aiHv5++                            //increment 5hv counter
 if (aiHv5 === 5){                 //if both block of 5h ship is hit
 aiShipsLeft--                    //decrement shipsLeft
+aiDirection = "lost"
+aiFoundArray.push(aiCurrentTd)
+max = Math.max.apply(null, aiFoundArray)
+min = Math.min.apply(null, aiFoundArray)
+
+paddingForHships(aiFoundArray[0])
+paddingForHships(aiFoundArray[1])
+paddingForHships(aiFoundArray[2])
+paddingForHships(aiFoundArray[3])
+paddingForHships(aiFoundArray[4])
+
+// y = aiLostShips.indexOf(max)
+// paddingForVships(aiFoundArray[y])
+//
+// y = aiLostShips.indexOf(min)
+// paddingForVships(aiFoundArray[y])
+
+paddingForVships(max)
+paddingForVships(min)
+
+
+aiFoundArray = []
 
 $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
-// console.log("5 block ship hit, shipsLeft is: " + shipsLeft)
 // $(".ship5").addClass("ship5show")
-}else {
- // audio = $("#fire")[0];
- // audio.play();
- // console.log("currentTd is " + currentTd)
- // console.log("this is " + $(this).attr("id"))
+}else{
+    if (aiHv5 == 1){
+        aiDirection = "unknown"
+        aiFoundArray.push(aiCurrentTd)
+    }else {
+    aiDirection = "horizontal"
+    aiFoundArray.push(aiCurrentTd)
+}
 
 }
 }
+
 
 
 
@@ -1468,9 +1538,8 @@ $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
 
   $("#aiHitTracker").text("Hits: " + aiHits)
   if (aiShipsLeft === 0) {
-    $("#winLose").text("The pirate won! He sank all your ships with 50 cannonballs");
+    $("#winLose").text("The pirate won! He sank all your ships.");
     $("td").off("click");
-    console.log("calling showAllShips function because won")
     showAllShips()
     $("#start").show(); //show start button
   }
@@ -1480,7 +1549,8 @@ $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
 // $("#aiBoard" + aiDig0).addClass("torpedoed");
 
 $("#aiBoard td").eq(aiDig0 + aiDig1).addClass("torpedoed");
-console.log("aiCurrentTd is " + aiDig0 + aiDig1)
+
+// put the missed one on here
 // $(this).off("click"); //can't click same square twice
 }
 aiTorpedoesLeft--;
@@ -1489,7 +1559,7 @@ $("#aiTorpedoTracker").text("Cannonballs left: " + torpedoesLeft);
 //check if used 25 torpedos.  Game over, show start button, turn board click off
 if(aiTorpedoesLeft === 0){
 if (aiShipsLeft == 0){
-  $("#winLose").text("You Won! You sank all pirate ships with 50 cannonballs");
+  $("#winLose").text("You Won! You sank all pirate ships.");
   $("td").off("click");
 }
 else if (aiShipsLeft ==1){
@@ -1500,12 +1570,10 @@ $("#winLose").text("There are still " + aiShipsLeft + " hero ships left patrolli
 
 
 $("td").off("click");
-console.log("calling showAllShips if ai lose")
 showAllShips() //after game over, show ships they did not hit
 $("#start").show();
 }
 
-}, delayMillis);
 ///////////////////End of Ai Portion/////////////////////////////////////////////////////////
 
 })  // end of click function
