@@ -6,16 +6,14 @@
 //********************************************************
 //////////////// Model////////////////////////////////////////////////////
 
-// var x
+
 var min
 var max
-// var aiPadding = []
 
 var torpedoesLeft       //keeps track of torpedoes aka cannonballs
 var hits                //keeps track of hits of ships
 var checkArray = []     //if any block of a ship is touching another ship, "failed" is put on checkArray
 var timeout             //timeout ensures check doesn't get in infinite loop
-// var notPlaced = 0
 var shipsLeft = 8       //keeps track of ships left
 var choose5             //randomly chooses the 5 ship to be horizontal or vertical
 
@@ -34,7 +32,6 @@ var hv5 = 0             //5 block horizontal or vertical ship counter (to keep t
 
 
 const ship1 = "1"       //constants to put in model of board
-
 const ship2h = "2h"
 const ship2v = "2v"
 const ship3h = "3h"
@@ -67,6 +64,9 @@ var aiDig1
 var aiHits = 0
 var aiShipsLeft = 8
 var aiTorpedoesLeft = 100
+
+
+
 
 
 // This will be when we detect a ship will be either lost, unknown, horizontal or vertical
@@ -833,6 +833,10 @@ $(document).ready(function(){
   //Once start button clicked all this happens:
   $("#start").click(function(){
 
+    $("#instructionsToHit").text("Click below");
+    $("#noHitHere").text("The pirate will shoot below");
+
+
 //for original game:
     //make board all light blue: (reset)
   shipRemove()
@@ -884,6 +888,9 @@ $(document).ready(function(){
     //hide start button until game over
     $("#start").hide();
     $("#instructions").hide();
+
+
+   
 
     choose5 = Math.floor(Math.random() * 2)
 
@@ -941,6 +948,9 @@ choose5 = 0  //for now choose horizontal only
 
     //each time user clicks specific square:
     $("#board td").click(function(){
+
+    $("#instructionsToHit").hide(); //hide the instructions on where to click
+    $("#noHitHere").hide();
 
 
       currentTd = $(this).attr("id") //grab id of td clicked
