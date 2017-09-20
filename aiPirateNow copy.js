@@ -5,34 +5,35 @@
 //********************************************************
 //********************************************************
 //////////////// Model////////////////////////////////////////////////////
-// var x
+var x
 var min
 var max
 // var aiPadding = []
 
-var torpedoesLeft       //keeps track of torpedoes aka cannonballs
-var hits                //keeps track of hits of ships
-var checkArray = []     //if any block of a ship is touching another ship, "failed" is put on checkArray
-var timeout             //timeout ensures check doesn't get in infinite loop
-// var notPlaced = 0
-var shipsLeft = 8       //keeps track of ships left
-var choose5             //randomly chooses the 5 ship to be horizontal or vertical
+var torpedoesLeft
+var hits
+// var shipArray=[]
+var checkArray = []
+var timeout
+var notPlaced = 0
+var shipsLeft = 8
+var choose5
+var pirateTalk
+var audio
+var currentTd
+var dig0
+var dig1
 
-var audio               //used to play pirate voice
-var currentTd           //the current table data (square on board)
-var dig0                //the first digit in table view
-var dig1                //the second digit table view
-
-var h2 = 0              //2 block horizontal ship counter (to keep track of if its sunk)
-var v2 = 0              //2 block vertical ship counter (to keep track of if its sunk)
-var h3 = 0              //3 block horizontal ship counter (to keep track of if its sunk)
-var v3 = 0              //3 block vertical ship counter (to keep track of if its sunk)
-var h4 = 0              //4 block horizontal ship counter (to keep track of if its sunk)
-var v4 = 0              //4 block vertical ship counter (to keep track of if its sunk)
-var hv5 = 0             //5 block horizontal or vertical ship counter (to keep track of if its sunk)
+var h2 = 0
+var v2 = 0
+var h3 = 0
+var v3 = 0
+var h4 = 0
+var v4 = 0
+var hv5 = 0
 
 
-const ship1 = "1"       //constants to put in model of board
+const ship1 = "1"
 const ship2h = "2h"
 const ship2v = "2v"
 const ship3h = "3h"
@@ -42,20 +43,20 @@ const ship4v= "4v"
 const ship5 = "5"
 
 
-var board = new Array(100)   //creates model of board and makes it zeroes
+var board = new Array(100)
 board.fill(0)
 
-var aiBoard = new Array(100) //creates model of ai board and makes it zeroes
+var aiBoard = new Array(100)
 aiBoard.fill(0)
 
-var aiLostShips = []         //keeps track of table data coordinates of "lost" ships to shoot at
-var aiShotTds = []           //keeps track of table data coordinates of ships already shot at
-for (i=0; i<100; i++){       //initializes aiLostShips array with 0 - 99 coordinates
+var aiLostShips = []
+var aiShotTds = []
+for (i=0; i<100; i++){
     aiLostShips[i] = i;
 }
-var aiRandom                //used to help find random coordiante for ai side
-var aiCurrentTd             //ai current table data
-// var aiLastTd                //ai last table data used
+var aiRandom
+var aiCurrentTd
+var aiLastTd
 var x
 var y
 var aiDig0
@@ -129,14 +130,14 @@ function shipRemove(){
     $("#aiBoard td").removeClass("ship4hshow");
     $("#aiBoard td").removeClass("ship4vshow");
     $("#aiBoard td").removeClass("ship5show");
-    $("#aiBoard td").removeClass("aiShip1");
-    $("#aiBoard td").removeClass("aiShip2h");
-    $("#aiBoard td").removeClass("aiShip2v");
-    $("#aiBoard td").removeClass("aiShip3h");
-    $("#aiBoard td").removeClass("aiShip3v");
-    $("#aiBoard td").removeClass("aiShip4h");
-    $("#aiBoard td").removeClass("aiShip4v");
-    $("#aiBoard td").removeClass("aiShip5");
+    $("#aiBoard td").removeClass("ship1");
+    $("#aiBoard td").removeClass("ship2h");
+    $("#aiBoard td").removeClass("ship2v");
+    $("#aiBoard td").removeClass("ship3h");
+    $("#aiBoard td").removeClass("ship3v");
+    $("#aiBoard td").removeClass("ship4h");
+    $("#aiBoard td").removeClass("ship4v");
+    $("#aiBoard td").removeClass("ship5");
 }
 
 function paddingForVships(coordinate){
@@ -351,9 +352,9 @@ function place4h(){
 
       } // end for
   } // end else
-  // else{
-  // // notPlaced++
-  // } //end else
+  else{
+  notPlaced++
+  } //end else
 } // end place4h function
 
 function aiPlace4h(){
@@ -382,9 +383,9 @@ function aiPlace4h(){
 
       } // end for
   } // end else
-  // else{
-  // // notPlaced++
-  // } //end else
+  else{
+  notPlaced++
+  } //end else
 } // end place4h function
 
 
@@ -420,8 +421,8 @@ function place4v(){
     //   $("#"+ (coordinate+30)).addClass("ship4")
       $("#"+ (coordinate1+3)+ (coordinate2)).addClass("ship4v")
   } // end else
-    // else{
-    // // notPlaced++} //end else
+    else{
+    notPlaced++} //end else
 } // end place4v function
 
 function aiPlace4v(){
@@ -464,8 +465,8 @@ function aiPlace4v(){
       $("#aiBoard td").eq(coordinate + 30).addClass("aiShip4v");
 
   } // end else
-    // else{
-    // // notPlaced++} //end else
+    else{
+    notPlaced++} //end else
 } // end place4v function
 
 
@@ -490,8 +491,8 @@ function place3h(){
 
       } // end for
   } // end else
-    // else{
-    // // notPlaced++} //end else}
+    else{
+    notPlaced++} //end else}
 } // end place3h function
 
 
@@ -518,8 +519,8 @@ function aiPlace3h(){
 
       } // end for
   } // end else
-    // else{
-    // // notPlaced++} //end else}
+    else{
+    notPlaced++} //end else}
 } // end place3h function
 
 function place3v(){
@@ -547,8 +548,8 @@ function place3v(){
     //   $("#"+ (coordinate+20)).addClass("ship3")
       $("#"+ (coordinate1+2)+ (coordinate2)).addClass("ship3v")
   } // end else
-    // else{
-    // // notPlaced++} //end else}
+    else{
+    notPlaced++} //end else}
 } // end place3v function
 
 function aiPlace3v(){
@@ -582,8 +583,8 @@ function aiPlace3v(){
       $("#aiBoard td").eq(coordinate + 20).addClass("aiShip3v");
 
   } // end else
-    // else{
-    // notPlaced++} //end else}
+    else{
+    notPlaced++} //end else}
 } // end place3v function
 
 
@@ -607,8 +608,8 @@ function place2h(){
 
       } // end for
   } // end else
-    // else{
-    // notPlaced++} //end else}
+    else{
+    notPlaced++} //end else}
 } // end place2h function
 
 function aiPlace2h(){
@@ -634,8 +635,8 @@ function aiPlace2h(){
 
       } // end for
   } // end else
-    // else{
-    // notPlaced++} //end else}
+    else{
+    notPlaced++} //end else}
 } // end place2h function
 
 
@@ -661,8 +662,8 @@ function place2v(){
       $("#"+ (coordinate1+1)+ (coordinate2)).addClass("ship2v")
 
   } // end else
-    // else{
-    // notPlaced++} //end else}
+    else{
+    notPlaced++} //end else}
 } // end place2v function
 
 
@@ -689,8 +690,8 @@ function aiPlace2v(){
     //   $("#"+ (coordinate1+1)+ (coordinate2)).addClass("ship2v")
       $("#aiBoard td").eq(coordinate + 10).addClass("aiShip2v");
   } // end else
-    // else{
-    // notPlaced++} //end else}
+    else{
+    notPlaced++} //end else}
 } // end place2v function
 
 
@@ -713,8 +714,8 @@ function place1(){
     //   $("#"+ (coordinate)).addClass("ship1")
       $("#"+ (coordinate1)+ (coordinate2)).addClass("ship1")
   } // end else
-    // else{
-    // notPlaced++} //end else}
+    else{
+    notPlaced++} //end else}
 } // end place1 function
 
 
@@ -735,8 +736,8 @@ function aiPlace1(){
       aiBoard[coordinate] = ship1
      $("#aiBoard td").eq(coordinate).addClass("aiShip1");
   } // end else
-    // else{
-    // notPlaced++} //end else}
+    else{
+    notPlaced++} //end else}
 } // end place1 function
 
 
@@ -850,19 +851,9 @@ $(document).ready(function(){
     checkArray = []
     hits=0;
     torpedoesLeft=100;
-    // notPlaced = 0;
+    notPlaced = 0;
     shipsLeft = 8;
     board.fill(0)
-    aiBoard.fill(0)
-
-    for (i=0; i<100; i++){       //initializes aiLostShips array with 0 - 99 coordinates
-    aiLostShips[i] = i;
-}
-
-  aiHits = 0
-  aiShipsLeft = 8
-  aiTorpedoesLeft = 100
-
     h2 = 0
     v2 = 0
     h3 = 0
@@ -1142,7 +1133,7 @@ if (aiDirection == "lost" ){ // get a random coordinate
 
     // aiCoord(aiCurrentTd)
 
-    // console.log("aiDirection aftercall aiCurrentTd on line 1059 is " + aiDirection + ", aicurrentTd is " + aiCurrentTd + ",  lastTd is " + aiLastTd)
+    console.log("aiDirection aftercall aiCurrentTd on line 1059 is " + aiDirection + ", aicurrentTd is " + aiCurrentTd + ",  lastTd is " + aiLastTd)
 
 
 } else if (aiDirection == "unknown"){
@@ -1242,9 +1233,9 @@ else if (aiDirection == "vertical")
 //adjust arrays
     aiCoord(aiCurrentTd)
 //save Td for next time
-    // aiLastTd = aiCurrentTd
+    aiLastTd = aiCurrentTd
 
-    // console.log("aiDirection on line 1117 is " + aiDirection + ", aicurrentTd is " + aiCurrentTd + ",  lastTd is " + aiLastTd)
+    console.log("aiDirection on line 1117 is " + aiDirection + ", aicurrentTd is " + aiCurrentTd + ",  lastTd is " + aiLastTd)
 
 //now check board to see if there's a hit
 
