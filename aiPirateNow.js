@@ -1093,7 +1093,7 @@ if (board[currentTd] === ship5){  // if the 5h or 5v ship is hit
 
         $("#hitTracker").text("Hits: " + hits)
         if (shipsLeft === 0) {
-          $("#instructionsToHit).text("You Won! You sank all the pirate ships!");
+          $("#instructionsToHit").text("You Won! You sank all the pirate ships!");
           $("td").off("click");
           showAllShips()
           $("#start").show(); //show start button
