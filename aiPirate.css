@@ -70,7 +70,7 @@ h1 {
 .hit{
   /*background-color: #cc0000*/
   background-image: url("shipXed.png");
-  /*z-index: 2*/
+  z-index: 2 !important;
   background-size: contain;
 }
 
@@ -222,6 +222,6 @@ h1 {
 .hit2{
   /*background-color: #cc0000*/
    background-image: url("shipXed.png");
-  /*z-index: 2*/
+  z-index: 2 !important;
   background-size: contain;
 }
