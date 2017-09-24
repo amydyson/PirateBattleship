@@ -1168,11 +1168,11 @@ if (x < 10){
             aiRandom = aiLostShips.length - 1;
             x = Math.floor(Math.random() * aiRandom)
             aiCurrentTd = aiLostShips[x]
-            alert("THIS SHOULD NOT HAPPEN!")
+            // alert("THIS SHOULD NOT HAPPEN!")
         }
     } else {
 
-        alert("Should never get here! if aiArrayFound is greater than one, shouldn't be in Unknown territory!")
+        // alert("Should never get here! if aiArrayFound is greater than one, shouldn't be in Unknown territory!")
 
     }
 
@@ -1204,7 +1204,7 @@ if (x < 10){
         aiRandom = aiLostShips.length - 1;
         x = Math.floor(Math.random() * aiRandom)
         aiCurrentTd = aiLostShips[x]
-        alert("THIS SHOULD NOT HAPPEN!")
+        // alert("THIS SHOULD NOT HAPPEN!")
     }
 
 }//end else if
@@ -1235,7 +1235,7 @@ else if (aiDirection == "vertical")
             aiRandom = aiLostShips.length - 1;
             x = Math.floor(Math.random() * aiRandom)
             aiCurrentTd = aiLostShips[x]
-            alert("THIS SHOULD NOT HAPPEN!")
+            // alert("THIS SHOULD NOT HAPPEN!")
 
         }
 
