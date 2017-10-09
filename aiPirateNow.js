@@ -882,6 +882,8 @@ $(document).ready(function(){
     $("#hitTracker").text("Hits: " + hits);
     $("#torpedoTracker").text("Cannonballs left: " + torpedoesLeft);
     $("#shipTracker").text("Ships left: " + shipsLeft);
+    $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
+
 
     $("#aiTorpedoTracker").text("Cannonballs left: " + aiTorpedoesLeft);
     $("#aiShipTracker").text("Ships left: " + aiShipsLeft);
