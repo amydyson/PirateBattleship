@@ -832,7 +832,19 @@ $(document).ready(function(){
 
   //Once start button clicked all this happens:
 
-  $("#start").on('touchstart click', function(){
+  document.addEventListener('click', function(event) {
+    if (event.target.id == 'start') {
+      startGame();
+    }
+});
+
+document.addEventListener('touchstart', function(event) {
+  if (event.target.id == 'start') {
+    startGame();
+  }
+});
+
+  function startGame(){
 
     $("#instructionsToHit").text("Click below");
     $("#noHitHere").text("The pirate will shoot below");
@@ -1594,6 +1606,6 @@ $("#start").show();
 
 })  // end of click function
 console.log("game is starting")
-})
+}
 
 })
