@@ -834,17 +834,15 @@ $(document).ready(function(){
 
   document.addEventListener('click', function(event) {
     if (event.target.id == 'start') {
-      console.log('click listener: ' + event.target.id);
-      debugger;
       startGame();
     }
-});
+  });
 
-document.addEventListener('touchstart', function(event) {
-  if (event.target.classList.contains('start')) {
-    startGame();
-  }
-});
+  document.addEventListener('touchstart', function(event) {
+    if (event.target.classList.contains('start')) {
+      startGame();
+    }
+  });
 
 
   function startGame(){
