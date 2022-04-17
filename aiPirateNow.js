@@ -831,7 +831,8 @@ $(document).ready(function(){
   $("td").off("click"); //clicking off until start button pressed
 
   //Once start button clicked all this happens:
-  $("#start").on('touchstart click', function () {
+
+  $("#start").on('touchstart click', function(){
 
     $("#instructionsToHit").text("Click below");
     $("#noHitHere").text("The pirate will shoot below");
@@ -947,7 +948,8 @@ choose5 = 0  //for now choose horizontal only
 
 
     //each time user clicks specific square:
-    $("#board td").on('touchstart click', function () {
+
+    $("#board td")..on('touchstart click', function(){
 
     $("#instructionsToHit").hide(); //hide the instructions on where to click
     $("#noHitHere").hide();
