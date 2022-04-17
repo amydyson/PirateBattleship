@@ -834,21 +834,18 @@ $(document).ready(function(){
 
   document.addEventListener('click', function(event) {
     if (event.target.id == 'start') {
-      alert('click listener: ' + event.target.id);
+      console.log('click listener: ' + event.target.id);
+      debugger;
       startGame();
     }
 });
 
 document.addEventListener('touchstart', function(event) {
-  alert('touchstart listener: ' + event.target.id);
-  if (event.target.id == 'start') {
-    startGame2();
+  if (event.target.classList.contains('start')) {
+    startGame();
   }
 });
 
-function startGame2(){
-  alert('hola');
-}
 
   function startGame(){
 
