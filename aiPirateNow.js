@@ -969,6 +969,7 @@ choose5 = 0  //for now choose horizontal only
 
     $("#board td").on('touchstart click', function(event){
       event.stopPropagation();
+      event.preventDefault();
 
     $("#instructionsToHit").hide(); //hide the instructions on where to click
     $("#noHitHere").hide();
